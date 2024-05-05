@@ -16,8 +16,9 @@ class User(db.Model, SerializerMixin):
 
     owned_bands = db.relationship('Band', back_populates='owner', cascade='all, delete-orphan')
     member_bands = db.relationship('Band', secondary='users_bands', back_populates='members')
-    instruments = db.relationship('Instrument', secondary='songs_users_instruments', back_populates='members')
-    songs = db.relationship('Song', secondary='songs_users_instruments', back_populates='members')
+    instruments = db.relationship('Instrument', secondary='users_instruments', back_populates='members')
+    songs_users_instruments = db.relationship('SongUserInstrument', back_populates='member', cascade='all, delete-orphan')
+    songs = association_proxy('songs_users_instruments', 'song')
     genres = association_proxy('member_bands', 'genre')
 
     @validates('username')
@@ -78,8 +79,9 @@ class Song(db.Model, SerializerMixin):
 
 
     band = db.relationship('Band', back_populates='songs', uselist=False)
-    instruments = db.relationship('Instrument', secondary='songs_users_instruments', back_populates='songs')
-    members = db.relationship('User', secondary='songs_users_instruments', back_populates='member_bands')
+    instruments = association_proxy('songs_users_instruments', 'instrument')
+    members = association_proxy('songs_users_instruments', 'member')
+    songs_users_instruments = db.relationship('SongUserInstrument', back_populates='song', cascade='all, delete-orphan')
 
     @validates('name')
     def validate_name(self, key, name):
@@ -94,9 +96,10 @@ class Instrument(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
-    members = db.relationship('User', secondary='songs_users_instruments', back_populates='instruments')
-    songs = db.relationship('Song', secondary='songs_users_instruments', back_populates='instruments')
-    bands = association_proxy('songs', 'band')
+    members = db.relationship('User', secondary='users_instruments', back_populates='instruments')
+    songs = association_proxy('songs_users_instruments', 'song')
+    # bands = association_proxy('songs', 'band')
+    songs_users_instruments = db.relationship('SongUserInstrument', back_populates='instrument', cascade='all, delete-orphan')
 
     @validates('name')
     def validate_name(self, key, name):
@@ -123,17 +126,26 @@ class Genre(db.Model, SerializerMixin):
             raise ValueError('This name already exists')
         else:
             return name
+
+class SongUserInstrument(db.Model, SerializerMixin):
+    __tablename__ = 'songs_users_instruments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    song_id = db.Column('song_id', db.Integer, db.ForeignKey('songs.id'), nullable=False)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'), nullable=True)
+    instrument_id = db.Column('instrument_id', db.Integer, db.ForeignKey('instruments.id'), nullable=False)
+
+    song = db.relationship('Song', back_populates='songs_users_instruments', uselist=False)
+    member = db.relationship('User', back_populates='songs_users_instruments', uselist=False)
+    instrument = db.relationship('Instrument', back_populates='songs_users_instruments', uselist=False)
+
         
 users_bands = db.Table('users_bands',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('band_id', db.Integer, db.ForeignKey('bands.id'), primary_key=True),
-    db.PrimaryKeyConstraint('user_id', 'band_id')
+    db.Column('band_id', db.Integer, db.ForeignKey('bands.id'), primary_key=True)
 )
 
-songs_users_instruments = db.Table('songs_users_instruments',
-    
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('instrument_id', db.Integer, db.ForeignKey('instruments.id')),
-    db.Column('song_id', db.Integer, db.ForeignKey('songs.id')),
-    db.PrimaryKeyConstraint('user_id', 'instrument_id', 'song_id')
+users_instruments = db.Table('users_instruments',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('instrument_id', db.Integer, db.ForeignKey('instruments.id'), primary_key=True)
 )

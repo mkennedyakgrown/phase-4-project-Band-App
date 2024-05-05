@@ -1,5 +1,5 @@
 from config import app, db
-from models import User, Band, Song, Instrument, Genre, users_bands, songs_users_instruments
+from models import User, Band, Song, Instrument, Genre, SongUserInstrument, users_bands, users_instruments
 
 def create_users():
   users = []
@@ -55,8 +55,9 @@ if __name__ == "__main__":
       Song.query.delete()
       Instrument.query.delete()
       Genre.query.delete()
+      SongUserInstrument.query.delete()
       db.session.query(users_bands).delete()
-      db.session.query(songs_users_instruments).delete()
+      db.session.query(users_instruments).delete()
       db.session.commit()
 
 
@@ -86,19 +87,25 @@ if __name__ == "__main__":
       db.session.commit()
 
       print('Seeding members...')
+      users = User.query.all()
+      bands = Band.query.all()
       for user in users:
         user.member_bands.append(bands[0])
       for band in bands:
+        band.members.append(users[0])
         band.members.append(users[1])
       db.session.commit()
 
       print('Seeding songs_users_instruments...')
-      for song in songs:
-        song.instruments.append(instruments[0])
-        instruments[0].songs.append(song)
-        song.users.append(users[0])
-        users[0].songs.append(song)
-        instruments[0].users.append(users[0])
+      song = Song.query.first()
+      user = User.query.first()
+      instrument = Instrument.query.first()
+      song_user_instrument = SongUserInstrument(
+        song_id=song.id,
+        user_id=user.id,
+        instrument_id=instrument.id
+      )
+      db.session.add(song_user_instrument)
       db.session.commit()
 
       print('Done!')
