@@ -108,4 +108,11 @@ if __name__ == "__main__":
       db.session.add(song_user_instrument)
       db.session.commit()
 
+      print('Seeding users_instruments...')
+      users = User.query.all()
+      instrument = Instrument.query.first()
+      for user in users:
+        user.instruments.append(instrument)
+      db.session.commit()
+
       print('Done!')
