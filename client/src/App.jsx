@@ -6,6 +6,8 @@ import "./App.css";
 function App() {
   const [bands, setBands] = useState([]);
   const [users, setUsers] = useState([]);
+  const [sessionUser, setSessionUser] = useState({});
+  const [userBands, setUserBands] = useState([]);
 
   useEffect(() => {
     fetch("/api/bands")
@@ -15,6 +17,12 @@ function App() {
       .then((r) => r.json())
       .then((data) => setUsers(data));
   }, []);
+
+  useEffect(() => {
+    fetch(`/api/bands/${sessionUser.id}`)
+      .then((r) => r.json())
+      .then((data) => setUserBands(data));
+  }, [sessionUser]);
 
   return (
     <>
