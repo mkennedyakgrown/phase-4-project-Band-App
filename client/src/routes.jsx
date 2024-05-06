@@ -8,6 +8,7 @@ const routes = [
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -22,7 +23,6 @@ const routes = [
         element: <Browse />,
       },
     ],
-    errorElement: <ErrorPage />,
   },
 ];
 

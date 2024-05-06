@@ -7,6 +7,9 @@ function NavBar() {
       <MenuItem as={NavLink} to="/" className="nav-link">
         Home
       </MenuItem>
+      <MenuItem as={NavLink} to="/browse" className="nav-link">
+        Browse
+      </MenuItem>
       <MenuItem as={NavLink} to="/login" className="nav-link">
         Login
       </MenuItem>
