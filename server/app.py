@@ -45,11 +45,11 @@ class Bands(Resource):
     bands = Band.query.all()
     return [band.to_dict() for band in bands]
 
-class UserBands(Resource):
+class BandsByUserId(Resource):
 
   def get(self, user_id):
-    user = User.query.filter(User.id == user_id).first()
-    return [band.to_dict() for band in user.member_bands]
+    bands = User.query.filter_by(id=user_id).first().member_bands
+    return [band.to_dict() for band in bands]
   
 class Users(Resource):
 
@@ -57,8 +57,16 @@ class Users(Resource):
     users = User.query.all()
     return [user.to_dict() for user in users]
   
+class UserById(Resource):
+  
+  def get(self, user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return user.to_dict()
+  
 api.add_resource(Bands, '/bands')
 api.add_resource(Users, '/users')
+api.add_resource(UserById, '/users/<int:user_id>')
+api.add_resource(BandsByUserId, '/bands/<int:user_id>')
 
 if __name__ == "__main__":
   app.run(port=5555, debug=True)

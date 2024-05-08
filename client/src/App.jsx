@@ -20,23 +20,24 @@ function App() {
   //       setSessionUser(data[0]);
   //     });
   // }, []);
-
   useEffect(() => {
+    console.log("Loading User");
     fetch(`/api/users/${1}`)
       .then((r) => r.json())
       .then((data) => {
         if (data) {
           setSessionUser(data);
+          console.log(`Session User: ${data.username}`);
         }
       });
-    fetch(`/api/bands/${sessionUser.id}`)
+    fetch(`/api/bands/${1}`)
       .then((r) => r.json())
       .then((data) => {
-        if (data) {
-          setUserBands(data);
-        }
+        console.log("Loading Bands");
+        setUserBands(data);
+        console.log(`User Bands: ${data}`);
       });
-  }, [sessionUser]);
+  }, []);
 
   return (
     <>
