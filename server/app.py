@@ -3,6 +3,7 @@
 from flask import request, session
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
+import pdb
 
 from config import app, db, api
 from models import User, Band, Song, Instrument, Genre
@@ -44,6 +45,12 @@ class Bands(Resource):
   def get(self):
     bands = Band.query.all()
     return [band.to_dict() for band in bands]
+  
+class BandById(Resource):
+  
+  def get(self, band_id):
+    band = Band.query.filter_by(id=band_id).first()
+    return band.to_dict()
 
 class BandsByUserId(Resource):
 
@@ -64,9 +71,10 @@ class UserById(Resource):
     return user.to_dict()
   
 api.add_resource(Bands, '/bands')
+api.add_resource(BandById, '/bands/<int:band_id>')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:user_id>')
-api.add_resource(BandsByUserId, '/bands/<int:user_id>')
+api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
 
 if __name__ == "__main__":
   app.run(port=5555, debug=True)

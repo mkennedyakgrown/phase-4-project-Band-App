@@ -4,25 +4,12 @@ import NavBar from "./components/NavBar.jsx";
 import "./App.css";
 
 function App() {
-  const [bands, setBands] = useState([]);
-  const [users, setUsers] = useState([]);
   const [sessionUser, setSessionUser] = useState({});
   const [userBands, setUserBands] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("/api/bands")
-  //     .then((r) => r.json())
-  //     .then((data) => setBands(data));
-  //   fetch("/api/users")
-  //     .then((r) => r.json())
-  //     .then((data) => {
-  //       setUsers(data);
-  //       setSessionUser(data[0]);
-  //     });
-  // }, []);
   useEffect(() => {
     console.log("Loading User");
-    fetch(`/api/users/${1}`)
+    fetch(`/api/users/1`)
       .then((r) => r.json())
       .then((data) => {
         if (data) {
@@ -30,10 +17,10 @@ function App() {
           console.log(`Session User: ${data.username}`);
         }
       });
-    fetch(`/api/bands/${1}`)
+    fetch(`/api/users/bands/1`)
       .then((r) => r.json())
       .then((data) => {
-        console.log("Loading Bands");
+        console.log("Loading User Bands");
         setUserBands(data);
         console.log(`User Bands: ${data}`);
       });
@@ -44,7 +31,7 @@ function App() {
       <header className="App-header">
         <NavBar />
       </header>
-      <Outlet context={{ bands, users, sessionUser, userBands }} />
+      <Outlet context={{ sessionUser, userBands }} />
     </>
   );
 }

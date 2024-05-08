@@ -5,9 +5,10 @@ import {
   CardHeader,
   Button,
 } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 
 function BandCard({ band, sessionUser }) {
+  const { setCurrBand } = useOutletContext();
   const bandMembers = band.members.map((member) => member.username).join(", ");
   return (
     <Card key={band.id}>

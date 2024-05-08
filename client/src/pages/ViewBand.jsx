@@ -1,12 +1,24 @@
+import { useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 import { Header, Divider, Segment, List, ListIcon } from "semantic-ui-react";
 
 function ViewBand() {
-  const { bands, users, sessionUser, userBands } = useOutletContext();
-  const bandId = useParams().id;
-  const band = bands[bandId - 1];
+  const { sessionUser, userBands } = useOutletContext();
+  const [band, setBand] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetch(`/api/bands/${id}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setBand(data);
+        console.log(`Band: ${data}`);
+      });
+  }, []);
+
   let membersList = [];
-  if (bands) {
+  if (band.name !== undefined) {
+    console.log(band);
     membersList = band.members.map((member) => {
       return (
         <List.Item>
@@ -19,11 +31,14 @@ function ViewBand() {
 
   return (
     <>
-      <Header as="h1">{band.name}</Header>
+      <Header as="h1">{band.name ? band.name : "Loading Band"}</Header>
       <Divider />
       <Segment>
-        <Header as="h3">Managed By: {band.owner.username}</Header>
-        <List></List>
+        <Header as="h3">
+          Managed By:{" "}
+          {band.owner !== undefined ? band.owner.username : "Loading Owner"}
+        </Header>
+        <List>{membersList}</List>
       </Segment>
     </>
   );
