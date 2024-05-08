@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,6 +5,7 @@ import {
   CardHeader,
   Button,
 } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
 
 function BandCard({ band, sessionUser }) {
   const bandMembers = band.members.map((member) => member.username).join(", ");
@@ -21,13 +21,17 @@ function BandCard({ band, sessionUser }) {
       </CardContent>
       <CardContent extra>
         {sessionUser.id === band.owner.id && (
-          <Button basic color="green" href={`/manage-bands/${band.id}`}>
-            Manage
-          </Button>
+          <NavLink to={`/my-bands/manage/${band.id}`}>
+            <Button basic color="green">
+              Manage
+            </Button>
+          </NavLink>
         )}
-        <Button basic color="blue" href={`/bands/${band.id}`}>
-          View
-        </Button>
+        <NavLink to={`/my-bands/${band.id}`}>
+          <Button basic color="blue">
+            View
+          </Button>
+        </NavLink>
       </CardContent>
     </Card>
   );
