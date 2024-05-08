@@ -235,10 +235,9 @@ if __name__ == "__main__":
       db.session.commit()
 
       print('Seeding users_instruments...')
-      users = User.query.all()
-      instrument = Instrument.query.first()
       for user in users:
-        user.instruments.append(instrument)
+        new_instruments = set(choice(instruments) for _ in range(5))
+        user.instruments.extend(new_instruments)
       db.session.commit()
 
       print('Done!')

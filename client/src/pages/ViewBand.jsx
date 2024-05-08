@@ -20,11 +20,19 @@ function ViewBand() {
   if (band.name !== undefined) {
     console.log(band);
     membersList = band.members.map((member) => {
+      console.log(member.instruments);
       return (
         <List.Item key={member.id}>
           <ListIcon name="users" />
           {member.username}
-          <List.Description>Instruments: {member.instruments}</List.Description>
+          <List.Description>
+            Instruments:{" "}
+            {member.instruments !== undefined
+              ? member.instruments
+                  .map((instrument) => instrument.name)
+                  .join(", ")
+              : ""}
+          </List.Description>
         </List.Item>
       );
     });
