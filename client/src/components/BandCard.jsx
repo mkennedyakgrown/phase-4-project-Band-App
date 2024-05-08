@@ -7,10 +7,9 @@ import {
 } from "semantic-ui-react";
 
 function BandCard({ band }) {
-  console.log(band);
   const bandMembers = band.members.map((member) => member.username).join(", ");
   return (
-    <Card>
+    <Card key={band.id} href={`/bands/${band.id}`}>
       <CardContent>
         <CardHeader>{band.name}</CardHeader>
         <CardDescription>
