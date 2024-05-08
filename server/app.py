@@ -43,13 +43,19 @@ class Bands(Resource):
 
   def get(self):
     bands = Band.query.all()
-    return [band.name for band in bands]
+    return [band.to_dict() for band in bands]
+
+class UserBands(Resource):
+
+  def get(self, user_id):
+    user = User.query.filter(User.id == user_id).first()
+    return [band.to_dict() for band in user.member_bands]
   
 class Users(Resource):
 
   def get(self):
     users = User.query.all()
-    return [user.username for user in users]
+    return [user.to_dict() for user in users]
   
 api.add_resource(Bands, '/bands')
 api.add_resource(Users, '/users')

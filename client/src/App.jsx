@@ -15,21 +15,28 @@ function App() {
       .then((data) => setBands(data));
     fetch("/api/users")
       .then((r) => r.json())
-      .then((data) => setUsers(data));
+      .then((data) => {
+        setUsers(data);
+        setSessionUser(data[0]);
+      });
   }, []);
 
-  useEffect(() => {
-    fetch(`/api/bands/${sessionUser.id}`)
-      .then((r) => r.json())
-      .then((data) => setUserBands(data));
-  }, [sessionUser]);
+  // useEffect(() => {
+  //   fetch(`/api/bands/${sessionUser.id}`)
+  //     .then((r) => r.json())
+  //     .then((data) => {
+  //       if (data) {
+  //         setUserBands(data);
+  //       }
+  //     });
+  // }, [sessionUser]);
 
   return (
     <>
       <header className="App-header">
         <NavBar />
       </header>
-      <Outlet context={{ bands, users, setBands, setUsers }} />
+      <Outlet context={{ bands, users, sessionUser, userBands }} />
     </>
   );
 }

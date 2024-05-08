@@ -21,6 +21,8 @@ class User(db.Model, SerializerMixin):
     songs = association_proxy('songs_users_instruments', 'song')
     genres = association_proxy('member_bands', 'genre')
 
+    serialize_rules = ('-owned_bands', '-instruments', '-songs_users_instruments', '-member_bands', '-songs', '-genres', '-_password_hash')
+
     @validates('username')
     def validate_username(self, key, name):
         if name == '':
@@ -61,6 +63,8 @@ class Band(db.Model, SerializerMixin):
     genre = db.relationship('Genre', back_populates='bands', uselist=False)
     instruments = association_proxy('songs', 'instruments')
 
+    serialize_rules = ('members', '-instruments', '-songs', 'genre')
+
     @validates('name')
     def validate_name(self, key, name):
         if name == '':
@@ -83,6 +87,8 @@ class Song(db.Model, SerializerMixin):
     members = association_proxy('songs_users_instruments', 'member')
     songs_users_instruments = db.relationship('SongUserInstrument', back_populates='song', cascade='all, delete-orphan')
 
+    serialize_rules = ('-instruments', '-members', '-band', '-songs_users_instruments')
+
     @validates('name')
     def validate_name(self, key, name):
         if name == '':
@@ -101,6 +107,8 @@ class Instrument(db.Model, SerializerMixin):
     # bands = association_proxy('songs', 'band')
     songs_users_instruments = db.relationship('SongUserInstrument', back_populates='instrument', cascade='all, delete-orphan')
 
+    serialize_rules = ('-members', '-songs', '-songs_users_instruments')
+
     @validates('name')
     def validate_name(self, key, name):
         if name == '':
@@ -117,6 +125,8 @@ class Genre(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
 
     bands = db.relationship('Band', back_populates='genre', cascade='all')
+
+    serialize_rules = ('-bands',)
 
     @validates('name')
     def validate_name(self, key, name):
@@ -138,6 +148,8 @@ class SongUserInstrument(db.Model, SerializerMixin):
     song = db.relationship('Song', back_populates='songs_users_instruments', uselist=False)
     member = db.relationship('User', back_populates='songs_users_instruments', uselist=False)
     instrument = db.relationship('Instrument', back_populates='songs_users_instruments', uselist=False)
+
+    serialize_rules = ('-member', '-song', '-instrument')
 
         
 users_bands = db.Table('users_bands',

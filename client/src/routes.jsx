@@ -1,6 +1,6 @@
 import App from "./App";
 import Login from "./pages/Login";
-import Browse from "./pages/Browse";
+import MyBands from "./pages/MyBands";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 
@@ -19,8 +19,8 @@ const routes = [
         element: <Login />,
       },
       {
-        path: "/browse",
-        element: <Browse />,
+        path: "/my-bands",
+        element: <MyBands />,
       },
     ],
   },

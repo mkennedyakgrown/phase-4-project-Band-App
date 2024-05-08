@@ -9,7 +9,7 @@ function NavBar() {
     setActiveItem(name);
   }
   return (
-    <Menu horizontal className="navBar">
+    <Menu fixed="top" className="navBar">
       <MenuItem
         name="home"
         as={NavLink}
@@ -20,13 +20,13 @@ function NavBar() {
         Home
       </MenuItem>
       <MenuItem
-        name="browse"
+        name="My Bands"
         as={NavLink}
-        to="/browse"
+        to="/my-bands"
         className="nav-link"
         onClick={handleItemClick}
       >
-        Browse
+        My Bands
       </MenuItem>
       <MenuItem
         name="login"
