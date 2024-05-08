@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, NavLink } from "react-router-dom";
 import { Header, Divider, Segment, List, ListIcon } from "semantic-ui-react";
 
 function ViewBand() {
@@ -21,9 +21,10 @@ function ViewBand() {
     console.log(band);
     membersList = band.members.map((member) => {
       return (
-        <List.Item>
+        <List.Item key={member.id}>
           <ListIcon name="users" />
           {member.username}
+          <List.Description>Instruments: {member.instruments}</List.Description>
         </List.Item>
       );
     });

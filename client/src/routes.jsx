@@ -4,6 +4,7 @@ import MyBands from "./pages/MyBands";
 import Home from "./pages/Home";
 import ViewBand from "./pages/ViewBand";
 import ManageBand from "./pages/ManageBand";
+import ManageProfile from "./pages/ManageProfile";
 import ErrorPage from "./pages/ErrorPage";
 
 const routes = [
@@ -31,6 +32,10 @@ const routes = [
       {
         path: "/my-bands/manage/:id",
         element: <ManageBand />,
+      },
+      {
+        path: "/users/:id",
+        element: <ManageProfile />,
       },
     ],
   },

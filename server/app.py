@@ -16,16 +16,7 @@ class Login(Resource):
         password = request.get_json()['password']
         if user is not None and user.authenticate(password) == True:
             session['user_id'] = user.id
-            return {
-               'id': user.id,
-               'username': user.username,
-               'email': user.email,
-               'owned_bands': [band.to_dict() for band in user.owned_bands],
-               'member_bands': [band.to_dict() for band in user.member_bands],
-               'instruments': [instrument.to_dict() for instrument in user.instruments],
-               'songs': [song.to_dict() for song in user.songs],
-               'genres': [genre.to_dict() for genre in user.genres]
-            }, 200
+            return user_dict(user), 200
         else:
             return {'message': 'Username and password do not match any users'}, 401
 
@@ -67,14 +58,25 @@ class Users(Resource):
 class UserById(Resource):
   
   def get(self, user_id):
-    user = User.query.filter_by(id=user_id).first()
-    return user.to_dict()
+    return user_dict(User.query.filter_by(id=user_id).first())
   
 api.add_resource(Bands, '/bands')
 api.add_resource(BandById, '/bands/<int:band_id>')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:user_id>')
 api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
+
+def user_dict(user):
+  return {
+    'id': user.id,
+    'username': user.username,
+    'email': user.email,
+    'owned_bands': [band.to_dict() for band in user.owned_bands],
+    'member_bands': [band.to_dict() for band in user.member_bands],
+    'instruments': [instrument.to_dict() for instrument in user.instruments],
+    'songs': [song.to_dict() for song in user.songs],
+    'genres': [genre.to_dict() for genre in user.genres]
+  }
 
 if __name__ == "__main__":
   app.run(port=5555, debug=True)
