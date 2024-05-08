@@ -13,37 +13,155 @@ def create_users():
     username='Jane Doe',
     email='janedoe@me.com'
   )
-  user2.password_hash = 'password'
+  user2.password_hash = 'password_isa-Dumb0-Password'
   users.append(user2)
+
+  user3 = User(
+    username='Keith Richards',
+    email='keith@me.com'
+  )
+  user3.password_hash = 'guitar'
+  users.append(user3)
+
+  user4 = User(
+    username='Percy McNeally',
+    email='percy@me.com'
+  )
+  user4.password_hash = 'lightning-thief'
+  users.append(user4)
+
+  user5 = User(
+    username='Dave Grohl',
+    email='dave@me.com'
+  )
+  user5.password_hash = 'MyHeRo'
+  users.append(user5)
+
+  user6 = User(
+    username='Mick Jagger',
+    email='mick@me.com'
+  )
+  user6.password_hash = 'black__betty'
+  users.append(user6)
 
   return users
 
 def create_bands():
-  band = Band()
-  band.name='The Rolling Stones'
-  band.owner_id=1
-  band.genre_id=1
+  bands = []
+  band1 = Band(
+    name='The Rolling Stones',
+    owner_id=1,
+    genre_id=1
+  )
+  bands.append(band1)
 
-  return [band]
+  band2 = Band(
+    name='The Clash',
+    owner_id=2,
+    genre_id=1
+  )
+  bands.append(band2)
+
+  band3 = Band(
+    name='The Beatles',
+    owner_id=3,
+    genre_id=1
+  )
+  bands.append(band3)
+
+  band4 = Band(
+    name='The Doors',
+    owner_id=5,
+    genre_id=1
+  )
+  bands.append(band4)
+
+  band5 = Band(
+    name='3 Doors Down',
+    owner_id=6,
+    genre_id=2
+  )
+  bands.append(band5)
+
+  band6 = Band(
+    name='Nickel Creek',
+    owner_id=4,
+    genre_id=4
+  )
+  bands.append(band6)
+
+  band7 = Band(
+    name='Strings Theory',
+    owner_id=5,
+    genre_id=5
+  )
+  bands.append(band7)
+  
+
+  return bands
 
 def create_songs():
-  song = Song()
-  song.name='Satisfaction'
-  song.band_id=1
+  songs = [
+    Song(
+      name='Satisfaction',
+      band_id=1
+    ),
+    Song(
+      name='Paint It Black',
+      band_id=1
+    ),
+    Song(
+      name='Sweet Caroline',
+      band_id=2
+    ),
+    Song(
+      name='Revolution',
+      band_id=3
+    ),
+    Song(
+      name='The Ballad of John and Yoko',
+      band_id=5
+    ),
+    Song(
+      name='I Will Always Love You',
+      band_id=4
+    ),
+    Song(
+      name='Kryptonite',
+      band_id=5
+    )
+  ]
 
-  return [song]
+  return songs
 
 def create_instruments():
-  instrument = Instrument()
-  instrument.name = 'Guitar'
+  instruments = [
+    Instrument(name = 'Guitar'),
+    Instrument(name = 'Piano'),
+    Instrument(name = 'Drums'),
+    Instrument(name = 'Bass'),
+    Instrument(name = 'Vocals'),
+    Instrument(name = 'Keyboard'),
+    Instrument(name = 'Saxophone'),
+    Instrument(name = 'Trumpet'),
+    Instrument(name = 'Flute'),
+    Instrument(name = 'Cello'),
+    Instrument(name = 'Harmonica'),
+    Instrument(name = 'Percussion'),
+  ]
 
-  return [instrument]
+  return instruments
 
 def create_genres():
-  genre = Genre()
-  genre.name = 'Rock'
+  genres = [
+  Genre(name = 'Rock'),
+  Genre(name = 'Jazz'),
+  Genre(name = 'Pop'),
+  Genre(name = 'Folk'),
+  Genre(name = 'Classical')
+  ]
 
-  return [genre]
+  return genres
 
 if __name__ == "__main__":
   with app.app_context():
@@ -94,6 +212,10 @@ if __name__ == "__main__":
       for band in bands:
         band.members.append(users[0])
         band.members.append(users[1])
+        band.members.append(users[2])
+        band.members.append(users[3])
+        band.members.append(users[4])
+        band.members.append(users[5])
       db.session.commit()
 
       print('Seeding songs_users_instruments...')
