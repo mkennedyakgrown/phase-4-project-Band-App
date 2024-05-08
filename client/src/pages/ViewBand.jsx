@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useOutletContext, useParams, NavLink } from "react-router-dom";
-import { Header, Divider, Segment, List, ListIcon } from "semantic-ui-react";
+import { Header, Divider, Segment, List, Card } from "semantic-ui-react";
+import UserCard from "../components/UserCard";
 
 function ViewBand() {
   const { sessionUser, userBands } = useOutletContext();
   const [band, setBand] = useState({});
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -19,20 +21,8 @@ function ViewBand() {
   let membersList = [];
   if (band.name !== undefined) {
     membersList = band.members.map((member) => {
-      console.log(member.instruments);
       return (
-        <List.Item key={member.id}>
-          <ListIcon name="users" />
-          {member.username}
-          <List.Description>
-            Instruments:{" "}
-            {member.instruments !== undefined
-              ? member.instruments
-                  .map((instrument) => instrument.name)
-                  .join(", ")
-              : ""}
-          </List.Description>
-        </List.Item>
+        <UserCard key={member.id} user={member} sessionUser={sessionUser} />
       );
     });
   }
