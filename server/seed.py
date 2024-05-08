@@ -1,5 +1,6 @@
 from config import app, db
 from models import User, Band, Song, Instrument, Genre, SongUserInstrument, users_bands, users_instruments
+from random import choice
 
 def create_users():
   users = []
@@ -219,15 +220,18 @@ if __name__ == "__main__":
       db.session.commit()
 
       print('Seeding songs_users_instruments...')
-      song = Song.query.first()
-      user = User.query.first()
-      instrument = Instrument.query.first()
-      song_user_instrument = SongUserInstrument(
-        song_id=song.id,
-        user_id=user.id,
-        instrument_id=instrument.id
-      )
-      db.session.add(song_user_instrument)
+      songs = Song.query.all()
+      users = User.query.all()
+      instruments = Instrument.query.all()
+      for band in bands:
+        for song in band.songs:
+          for user in band.members:
+            song_user_instrument = SongUserInstrument(
+              song_id = song.id,
+              user_id = user.id,
+              instrument_id = choice(instruments).id
+            )
+            db.session.add(song_user_instrument)
       db.session.commit()
 
       print('Seeding users_instruments...')
