@@ -41,7 +41,9 @@ class BandById(Resource):
   
   def get(self, band_id):
     band = Band.query.filter_by(id=band_id).first()
-    return band.to_dict()
+    band_dict = band.to_dict()
+    band_dict['members'] = [user_dict(user) for user in band.members]
+    return band_dict
 
 class BandsByUserId(Resource):
 
@@ -53,7 +55,7 @@ class Users(Resource):
 
   def get(self):
     users = User.query.all()
-    return [user.to_dict() for user in users]
+    return [user_dict(user) for user in users]
   
 class UserById(Resource):
   

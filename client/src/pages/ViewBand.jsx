@@ -18,7 +18,6 @@ function ViewBand() {
 
   let membersList = [];
   if (band.name !== undefined) {
-    console.log(band);
     membersList = band.members.map((member) => {
       console.log(member.instruments);
       return (
