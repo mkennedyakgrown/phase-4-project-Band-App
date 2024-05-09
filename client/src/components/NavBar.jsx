@@ -20,13 +20,22 @@ function NavBar() {
         Home
       </MenuItem>
       <MenuItem
-        name="My Bands"
+        name="my-bands"
         as={NavLink}
         to="/my-bands"
         className="nav-link"
         onClick={handleItemClick}
       >
         My Bands
+      </MenuItem>
+      <MenuItem
+        name="create-band"
+        as={NavLink}
+        to="/new-band"
+        className="nav-link"
+        onClick={handleItemClick}
+      >
+        Create a Band
       </MenuItem>
       <MenuItem
         name="login"

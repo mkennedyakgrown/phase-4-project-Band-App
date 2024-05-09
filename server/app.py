@@ -73,6 +73,12 @@ class UserById(Resource):
   
   def get(self, user_id):
     return user_dict(User.query.filter_by(id=user_id).first())
+
+class Genres(Resource):
+  
+  def get(self):
+    genres = Genre.query.all()
+    return [genre.to_dict() for genre in genres]
   
 api.add_resource(Bands, '/bands')
 api.add_resource(BandById, '/bands/<int:band_id>')
@@ -80,6 +86,7 @@ api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:user_id>')
 api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
 api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
+api.add_resource(Genres, '/genres')
 
 def user_dict(user):
   return {
