@@ -43,6 +43,7 @@ function ManageBand() {
         </Header>
         <List>{membersList}</List>
       </Segment>
+      {/* ADD DELETE BAND BUTTON */}
     </>
   );
 }

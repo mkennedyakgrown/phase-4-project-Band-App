@@ -37,6 +37,16 @@ class Bands(Resource):
     bands = Band.query.all()
     return [band.to_dict() for band in bands]
   
+  def post(self):
+    name = request.get_json()['name']
+    genre_id = request.get_json()['genre_id']
+    owner_id = session['user_id']
+    band = Band(name=name, genre_id=genre_id, owner_id=owner_id)
+    band.members.append(User.query.filter_by(id=owner_id).first())
+    db.session.add(band)
+    db.session.commit()
+    return band.to_dict()
+  
 class BandById(Resource):
   
   def get(self, band_id):

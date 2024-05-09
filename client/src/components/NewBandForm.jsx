@@ -7,8 +7,10 @@ import {
   Dropdown,
   Label,
 } from "semantic-ui-react";
+import { useOutletContext } from "react-router-dom";
 
-function NewBandForm({ genres, sessionUser }) {
+function NewBandForm({ genres }) {
+  const { userBands, setUserBands } = useOutletContext();
   const [bandOptions, setBandOptions] = useState({});
 
   let genreOptions = [];
@@ -17,13 +19,33 @@ function NewBandForm({ genres, sessionUser }) {
       return {
         key: genre.id,
         text: genre.name,
-        value: genre.name,
+        value: genre.id,
       };
     });
   }
   console.log(bandOptions);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    fetch("/api/bands", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: bandOptions.name,
+        genre_id: bandOptions.genre,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        setUserBands(...userBands, data);
+        setBandOptions({});
+      });
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <FormField
         onChange={(e) =>
           setBandOptions({ ...bandOptions, name: e.target.value })
@@ -48,16 +70,7 @@ function NewBandForm({ genres, sessionUser }) {
           }}
         />
       </FormField>
-      <FormField>
-        <Label basic pointing="below">
-          Add Members (optional)
-        </Label>
-      </FormField>
-      <FormField>
-        <Label basic pointing="below">
-          Add Songs (optional)
-        </Label>
-      </FormField>
+      <Button type="submit">Submit</Button>
     </Form>
   );
 }
