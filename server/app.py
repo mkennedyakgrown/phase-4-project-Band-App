@@ -44,6 +44,18 @@ class BandById(Resource):
     band_dict = band.to_dict()
     band_dict['members'] = [user_dict(user) for user in band.members]
     return band_dict
+  
+class BandMembers(Resource):
+   
+  def patch(self, band_id, user_id):
+    band = Band.query.filter_by(id=band_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    if user not in band.members:
+      band.members.append(user)
+    else:
+      band.members.remove(user)
+    db.session.commit()
+    return user_dict(user)
 
 class BandsByUserId(Resource):
 
@@ -67,6 +79,7 @@ api.add_resource(BandById, '/bands/<int:band_id>')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:user_id>')
 api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
+api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 
 def user_dict(user):
   return {

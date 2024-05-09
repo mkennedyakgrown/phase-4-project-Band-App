@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Card, Accordion, Button } from "semantic-ui-react";
+import RemoveMemeberButton from "./RemoveMemberButton";
 
-function UserCard({ user, sessionUser }) {
+function UserCard({ user, sessionUser, band }) {
   const [isActive, setIsActive] = useState(false);
   const bands = user.member_bands.map((band) => band.name).join(", ");
   console.log(bands);
@@ -19,7 +20,9 @@ function UserCard({ user, sessionUser }) {
               Member of: {bands}
             </Accordion.Content>
           </Accordion>
-          <Button onClick={() => console.log(user)}>Remove Band Member</Button>
+          {sessionUser.id === band.owner.id && (
+            <RemoveMemeberButton user={user} band={band} />
+          )}
         </Card.Description>
       </Card.Content>
     </Card>

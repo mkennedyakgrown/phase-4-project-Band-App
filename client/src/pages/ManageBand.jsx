@@ -22,7 +22,12 @@ function ManageBand() {
   if (band.name !== undefined) {
     membersList = band.members.map((member) => {
       return (
-        <UserCard key={member.id} user={member} sessionUser={sessionUser} />
+        <UserCard
+          key={member.id}
+          user={member}
+          sessionUser={sessionUser}
+          band={band}
+        />
       );
     });
   }
