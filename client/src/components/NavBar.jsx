@@ -1,14 +1,25 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { MenuItem, Menu } from "semantic-ui-react";
+import { MenuItem, Menu, Button } from "semantic-ui-react";
 import "../App.css";
-import user from "../App";
 
-function NavBar() {
+function NavBar({ user, setUser }) {
   const [activeItem, setActiveItem] = useState("home");
+
   function handleItemClick(e, { name }) {
     setActiveItem(name);
   }
+
+  function handleLogoutClick() {
+    fetch("/api/logout", {
+      method: "DELETE",
+    }).then((r) => {
+      if (r.ok) {
+        setUser({});
+      }
+    });
+  }
+
   return (
     <Menu fixed="top" className="navBar">
       <MenuItem
@@ -38,16 +49,8 @@ function NavBar() {
       >
         Create a Band
       </MenuItem>
-      {user != [] ? (
-        <MenuItem
-          name="logout"
-          as={NavLink}
-          to="/logout"
-          className="nav-link"
-          onClick={handleItemClick}
-        >
-          Logout
-        </MenuItem>
+      {user.id ? (
+        <Button onClick={handleLogoutClick}>Logout</Button>
       ) : (
         <MenuItem
           name="login"

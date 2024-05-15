@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <header className="App-header">
-        <NavBar />
+        <NavBar user={user} setUser={setUser} />
       </header>
       <Outlet context={{ user, setUser, userBands, setUserBands }} />
     </>

@@ -1,8 +1,6 @@
 import { Navigate } from "react-router-dom";
-import user from "./App";
 import App from "./App";
 import Login from "./pages/Login";
-import Logout from "./pages/Logout";
 import MyBands from "./pages/MyBands";
 import Home from "./pages/Home";
 import ViewBand from "./pages/ViewBand";
@@ -19,15 +17,11 @@ const routes = [
     children: [
       {
         path: "/",
-        element: user != [] ? <Home /> : <Navigate to="/login" />,
+        element: <Home />,
       },
       {
         path: "/login",
-        element: user != [] ? <Navigate to="/" /> : <Login />,
-      },
-      {
-        path: "/logout",
-        element: user != [] ? <Logout /> : <Navigate to="/login" />,
+        element: <Login />,
       },
       {
         path: "/my-bands",

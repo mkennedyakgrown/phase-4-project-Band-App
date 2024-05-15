@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useOutletContext, Navigate } from "react-router-dom";
 import { Header, Button, Divider } from "semantic-ui-react";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
@@ -10,6 +10,7 @@ function Login() {
 
   return (
     <>
+      {user.id ? <Navigate to="/" /> : null}
       <main>
         <br />
         {showLogin ? (
