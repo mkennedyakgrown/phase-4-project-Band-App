@@ -14,9 +14,9 @@ class Signup(Resource):
         json = request.get_json()
         user = User(
           username=json.get('username', ''),
-          password_hash=json.get('password', ''),
           email=json.get('email', '')
         )
+        user.password_hash = json.get('password', '')
         try:
             db.session.add(user)
             db.session.commit()

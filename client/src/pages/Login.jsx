@@ -32,7 +32,7 @@ function Login() {
           </>
         ) : (
           <>
-            <SignupForm onLogin={onLogin} />
+            <SignupForm onLogin={setUser} />
             <Divider />
             <p>
               Already have an account ? &nbsp;

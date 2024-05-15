@@ -37,6 +37,7 @@ function LoginForm({ onLogin }) {
           name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          autoComplete="username"
         />
       </FormField>
       <FormField>
@@ -47,6 +48,7 @@ function LoginForm({ onLogin }) {
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
         />
       </FormField>
       <FormField>

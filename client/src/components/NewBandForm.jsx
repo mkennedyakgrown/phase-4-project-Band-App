@@ -23,7 +23,6 @@ function NewBandForm({ genres }) {
       };
     });
   }
-  console.log(bandOptions);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -39,7 +38,7 @@ function NewBandForm({ genres }) {
     })
       .then((r) => r.json())
       .then((data) => {
-        setUserBands(...userBands, data);
+        setUserBands([...userBands, data]);
         setBandOptions({});
       });
   }
