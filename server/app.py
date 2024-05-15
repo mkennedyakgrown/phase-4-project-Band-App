@@ -98,6 +98,9 @@ class Genres(Resource):
     genres = Genre.query.all()
     return [genre.to_dict() for genre in genres]
   
+api.add_resource(CheckSession, '/check_session')
+api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
 api.add_resource(Bands, '/bands')
 api.add_resource(BandById, '/bands/<int:band_id>')
 api.add_resource(Users, '/users')
