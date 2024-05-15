@@ -29,7 +29,15 @@ class Logout(Resource):
         else:
             return {'message': 'Cannot logout: not logged in'}, 401
 
-
+class CheckSession(Resource):
+   
+   def get(self):
+      user_id = session['user_id']
+      if user_id:
+         user = User.query.filter(User.id == user_id).first()
+         return user_dict(user), 200
+      else:
+         return {'message': 'Not logged in'}, 401
 
 class Bands(Resource):
 

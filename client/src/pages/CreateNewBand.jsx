@@ -6,7 +6,7 @@ import NewBandForm from "../components/NewBandForm";
 function CreateNewBand() {
   const [genres, setGenres] = useState([]);
 
-  const { sessionUser } = useOutletContext();
+  const { user } = useOutletContext();
 
   useEffect(() => {
     fetch("/api/genres")
@@ -17,7 +17,7 @@ function CreateNewBand() {
   return (
     <>
       <Header as="h1">Create A New Band</Header>
-      <NewBandForm genres={genres} sessionUser={sessionUser} />
+      <NewBandForm genres={genres} />
     </>
   );
 }
