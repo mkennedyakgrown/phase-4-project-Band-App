@@ -6,7 +6,7 @@ import SignupForm from "../components/SignupForm";
 
 function Login() {
   const [showLogin, setShowLogin] = useState(true);
-  const { setUser } = useOutletContext();
+  const { user, setUser } = useOutletContext();
 
   return (
     <>

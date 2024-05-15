@@ -20,13 +20,15 @@ function App() {
     });
   }, []);
   useEffect(() => {
-    fetch(`/api/users/bands/${user.id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        console.log("Loading User Bands");
-        setUserBands(data);
-        console.log(`User Bands: ${data}`);
-      });
+    if (user.id) {
+      fetch(`/api/users/bands/${user.id}`)
+        .then((r) => r.json())
+        .then((data) => {
+          console.log("Loading User Bands");
+          setUserBands(data);
+          console.log(`User Bands: ${data}`);
+        });
+    }
   }, [user]);
 
   return (
