@@ -8,6 +8,23 @@ import pdb
 from config import app, db, api
 from models import User, Band, Song, Instrument, Genre
 
+class Signup(Resource):
+    
+    def post(self):
+        json = request.get_json()
+        user = User(
+          username=json.get('username', ''),
+          password_hash=json.get('password', ''),
+          email=json.get('email', '')
+        )
+        try:
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            return user_dict(user), 201
+        except:
+            return {'message': 'Error creating user'}, 422
+
 class Login(Resource):
     
     def post(self):
@@ -98,6 +115,7 @@ class Genres(Resource):
     genres = Genre.query.all()
     return [genre.to_dict() for genre in genres]
   
+api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
