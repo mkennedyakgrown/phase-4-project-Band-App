@@ -7,6 +7,7 @@ function App() {
   const [user, setUser] = useState({});
   const [userBands, setUserBands] = useState([]);
 
+  // check if user is logged in
   useEffect(() => {
     console.log("Loading User");
     fetch(`/api/check_session`).then((r) => {
@@ -19,6 +20,7 @@ function App() {
       }
     });
   }, []);
+  // set user bands when user is logged in or logged out
   useEffect(() => {
     if (user.id) {
       fetch(`/api/users/bands/${user.id}`)
