@@ -5,7 +5,7 @@ import MyBands from "./pages/MyBands";
 import Home from "./pages/Home";
 import ViewBand from "./pages/ViewBand";
 import ManageBand from "./pages/ManageBand";
-import ManageProfile from "./pages/ManageProfile";
+import Profile from "./components/Profile";
 import CreateNewBand from "./pages/CreateNewBand";
 import ErrorPage from "./pages/ErrorPage";
 
@@ -37,7 +37,7 @@ const routes = [
       },
       {
         path: "/users/:id",
-        element: <ManageProfile />,
+        element: <Profile />,
       },
       {
         path: "/new-band",
