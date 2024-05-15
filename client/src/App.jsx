@@ -14,6 +14,7 @@ function App() {
         r.json().then((data) => {
           setUser(data);
           console.log(`User: ${data.username}`);
+          console.log(data);
         });
       }
     });

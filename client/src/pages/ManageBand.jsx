@@ -4,7 +4,7 @@ import { Header, Divider, Segment, List } from "semantic-ui-react";
 import UserCard from "../components/UserCard";
 
 function ManageBand() {
-  const { sessionUser, userBands } = useOutletContext();
+  const { user, userBands } = useOutletContext();
   const [band, setBand] = useState({});
 
   const { id } = useParams();
@@ -25,7 +25,7 @@ function ManageBand() {
         <UserCard
           key={member.id}
           user={member}
-          sessionUser={sessionUser}
+          sessionUser={user}
           band={band}
         />
       );
