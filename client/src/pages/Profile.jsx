@@ -1,14 +1,30 @@
-import { useOutletContext, Navigate } from "react-router-dom";
-import { Header } from "semantic-ui-react";
-import UserCard from "../components/BandMemberCard";
+import { useOutletContext, Navigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Header, SegmentGroup, Segment } from "semantic-ui-react";
+import UserInfo from "../components/UserInfo";
+import ManageProfileForm from "../components/ManageProfileForm";
 
 function Profile() {
+  const [currUser, setCurrUser] = useState({});
   const { user } = useOutletContext();
+  const { username } = useParams();
+
+  useEffect(() => {
+    fetch(`/api/users/${username}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setCurrUser(data);
+      });
+  }, [username]);
+
   return (
     <>
-      {user.id ? null : <Navigate to="/login" />}
       <Header as="h1">Profile</Header>
-      <UserCard user={user} sessionUser={user} />
+      {user.id === currUser.id ? (
+        <ManageProfileForm />
+      ) : (
+        <UserInfo currUser={currUser} />
+      )}
     </>
   );
 }

@@ -49,6 +49,15 @@ function NavBar({ user, setUser }) {
       >
         Create a Band
       </MenuItem>
+      <MenuItem
+        name="profile"
+        as={NavLink}
+        to={`/users/${user.username}`}
+        className="nav-link"
+        onClick={handleItemClick}
+      >
+        Profile
+      </MenuItem>
       {user.id ? (
         <Button onClick={handleLogoutClick}>Logout</Button>
       ) : (

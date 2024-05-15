@@ -98,6 +98,12 @@ class BandsByUserId(Resource):
     bands = User.query.filter_by(id=user_id).first().member_bands
     return [band.to_dict() for band in bands]
   
+class BandByName(Resource):
+  
+  def get(self, name):
+    band = Band.query.filter_by(name=name).first()
+    return band.to_dict()
+  
 class Users(Resource):
 
   def get(self):
@@ -108,6 +114,11 @@ class UserById(Resource):
   
   def get(self, user_id):
     return user_dict(User.query.filter_by(id=user_id).first())
+  
+class UserByUsername(Resource):
+  
+  def get(self, username):
+    return user_dict(User.query.filter_by(username=username).first())
 
 class Genres(Resource):
   
@@ -123,6 +134,7 @@ api.add_resource(Bands, '/bands')
 api.add_resource(BandById, '/bands/<int:band_id>')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:user_id>')
+api.add_resource(UserByUsername, '/users/<string:username>')
 api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
 api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 api.add_resource(Genres, '/genres')

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Accordion, Button } from "semantic-ui-react";
+import { Card, Accordion } from "semantic-ui-react";
 import RemoveMemeberButton from "./RemoveMemberButton";
 
 function BandMemberCard({ user, sessionUser, band }) {

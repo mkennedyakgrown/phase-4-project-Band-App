@@ -36,7 +36,7 @@ const routes = [
         element: <ManageBand />,
       },
       {
-        path: "/users/:id",
+        path: "/users/:username",
         element: <Profile />,
       },
       {
