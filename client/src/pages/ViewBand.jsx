@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useOutletContext, useParams, NavLink } from "react-router-dom";
 import { Header, Divider, Segment, List, Card } from "semantic-ui-react";
-import UserCard from "../components/UserCard";
+import UserCard from "../components/BandMemberCard";
 
 function ViewBand() {
   const { user, userBands } = useOutletContext();

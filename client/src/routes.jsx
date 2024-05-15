@@ -5,7 +5,7 @@ import MyBands from "./pages/MyBands";
 import Home from "./pages/Home";
 import ViewBand from "./pages/ViewBand";
 import ManageBand from "./pages/ManageBand";
-import Profile from "./components/Profile";
+import Profile from "./pages/Profile";
 import CreateNewBand from "./pages/CreateNewBand";
 import ErrorPage from "./pages/ErrorPage";
 

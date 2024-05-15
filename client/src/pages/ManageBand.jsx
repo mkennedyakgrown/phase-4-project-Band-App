@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 import { Header, Divider, Segment, List } from "semantic-ui-react";
-import UserCard from "../components/UserCard";
+import BandMemberCard from "../components/BandMemberCard";
 
 function ManageBand() {
   const { user, userBands } = useOutletContext();
@@ -22,7 +22,7 @@ function ManageBand() {
   if (band.name !== undefined) {
     membersList = band.members.map((member) => {
       return (
-        <UserCard
+        <BandMemberCard
           key={member.id}
           user={member}
           sessionUser={user}

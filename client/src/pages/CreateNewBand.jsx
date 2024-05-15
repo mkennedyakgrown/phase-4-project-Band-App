@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Navigate } from "react-router-dom";
 import { Header } from "semantic-ui-react";
 import NewBandForm from "../components/NewBandForm";
 
@@ -16,6 +16,7 @@ function CreateNewBand() {
 
   return (
     <>
+      {user.id ? null : <Navigate to="/login" />}
       <Header as="h1">Create A New Band</Header>
       <NewBandForm genres={genres} />
     </>
