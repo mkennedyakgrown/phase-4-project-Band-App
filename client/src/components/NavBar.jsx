@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { MenuItem, Menu } from "semantic-ui-react";
 import "../App.css";
+import user from "../App";
 
 function NavBar() {
   const [activeItem, setActiveItem] = useState("home");
@@ -37,15 +38,27 @@ function NavBar() {
       >
         Create a Band
       </MenuItem>
-      <MenuItem
-        name="login"
-        as={NavLink}
-        to="/login"
-        className="nav-link"
-        onClick={handleItemClick}
-      >
-        Login
-      </MenuItem>
+      {user != [] ? (
+        <MenuItem
+          name="logout"
+          as={NavLink}
+          to="/logout"
+          className="nav-link"
+          onClick={handleItemClick}
+        >
+          Logout
+        </MenuItem>
+      ) : (
+        <MenuItem
+          name="login"
+          as={NavLink}
+          to="/login"
+          className="nav-link"
+          onClick={handleItemClick}
+        >
+          Login
+        </MenuItem>
+      )}
     </Menu>
   );
 }
