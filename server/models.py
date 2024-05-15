@@ -5,7 +5,6 @@ from sqlalchemy.orm import validates
 from sqlalchemy import ForeignKey
 
 from config import db, bcrypt
-
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
@@ -21,7 +20,7 @@ class User(db.Model, SerializerMixin):
     songs = association_proxy('songs_users_instruments', 'song')
     genres = association_proxy('member_bands', 'genre')
 
-    serialize_rules = ('-owned_bands', '-instruments', '-songs_users_instruments', '-member_bands', '-songs', '-genres', '-_password_hash')
+    serialize_rules = ('-owned_bands', 'instruments', '-songs_users_instruments', '-member_bands', '-songs', '-genres', '-_password_hash')
 
     @validates('username')
     def validate_username(self, key, name):

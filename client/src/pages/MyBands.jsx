@@ -6,7 +6,7 @@ function MyBands() {
   const { userBands, user } = useOutletContext();
 
   const displayBands = userBands.map((band) => {
-    return <BandCard key={band.id} band={band} user={user} />;
+    return <BandCard key={band.id} band={band} />;
   });
 
   return (

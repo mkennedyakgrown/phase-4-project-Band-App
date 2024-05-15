@@ -7,8 +7,8 @@ import {
 } from "semantic-ui-react";
 import { NavLink, useOutletContext } from "react-router-dom";
 
-function BandCard({ band, user }) {
-  const { setCurrBand } = useOutletContext();
+function BandCard({ band }) {
+  const { setCurrBand, user } = useOutletContext();
   const bandMembers = band.members.map((member) => member.username).join(", ");
   return (
     <Card key={band.id}>
@@ -21,18 +21,19 @@ function BandCard({ band, user }) {
         </CardDescription>
       </CardContent>
       <CardContent extra>
-        {user.id === band.owner.id && (
-          <NavLink to={`/my-bands/manage/${band.id}`}>
+        {user.id === band.owner.id ? (
+          <NavLink to={`/my-bands/${band.id}`}>
             <Button basic color="green">
               Manage
             </Button>
           </NavLink>
+        ) : (
+          <NavLink to={`/my-bands/${band.id}`}>
+            <Button basic color="blue">
+              View
+            </Button>
+          </NavLink>
         )}
-        <NavLink to={`/my-bands/${band.id}`}>
-          <Button basic color="blue">
-            View
-          </Button>
-        </NavLink>
       </CardContent>
     </Card>
   );

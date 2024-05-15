@@ -5,35 +5,14 @@ import {
   Segment,
   Icon,
   List,
+  ListItem,
   Accordion,
   AccordionTitle,
 } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import BandsList from "./BandsList";
+import InstrumentsList from "./InstrumentsList";
 
 function UserInfo({ currUser }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  let displayBands = [];
-  if (currUser.id) {
-    console.log(currUser);
-    displayBands = currUser.member_bands.map((band) => {
-      return (
-        <li key={band.id}>
-          <Accordion>
-            <AccordionTitle
-              active={activeIndex === band.id}
-              index={band.id}
-              onClick={() => setActiveIndex(band.id)}
-            >
-              {band.name}
-            </AccordionTitle>
-            <Accordion.Content active={activeIndex === band.id}>
-              <Link to={`/bands/${band.name}`}>Go to {band.name}'s page</Link>
-            </Accordion.Content>
-          </Accordion>
-        </li>
-      );
-    });
-  }
   return (
     <SegmentGroup fluid="true">
       <Segment>
@@ -47,7 +26,11 @@ function UserInfo({ currUser }) {
       </Segment>
       <Segment>
         <Header as="h3">Member of Bands:</Header>
-        <List>{displayBands}</List>
+        <BandsList bands={currUser.id ? currUser.member_bands : []} />
+      </Segment>
+      <Segment>
+        <Header as="h3">Instruments</Header>
+        <InstrumentsList instruments={currUser.instruments} />
       </Segment>
     </SegmentGroup>
   );
