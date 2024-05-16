@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { useOutletContext, useParams, NavLink } from "react-router-dom";
-import { Header, Divider, Segment, List, Card } from "semantic-ui-react";
+import {
+  Header,
+  Divider,
+  Segment,
+  List,
+  Card,
+  Grid,
+  GridColumn,
+  GridRow,
+} from "semantic-ui-react";
 import UserCard from "../components/BandMemberCard";
 
 function ViewBand() {
@@ -20,16 +29,21 @@ function ViewBand() {
 
   let membersList = [];
   if (band.name !== undefined) {
-    membersList = band.members.map((member) => {
+    const membersCards = band.members.map((member) => {
       return (
-        <UserCard
-          key={member.id}
-          user={member}
-          sessionUser={user}
-          band={band}
-        />
+        <GridColumn>
+          <UserCard
+            key={member.id}
+            user={member}
+            sessionUser={user}
+            band={band}
+          />
+        </GridColumn>
       );
     });
+    while (membersCards.length > 0) {
+      membersList.push(<GridRow>{membersCards.splice(0, 3)}</GridRow>);
+    }
   }
 
   return (
@@ -41,7 +55,12 @@ function ViewBand() {
           Managed By:{" "}
           {band.owner !== undefined ? band.owner.username : "Loading Owner"}
         </Header>
-        <List>{membersList}</List>
+      </Segment>
+      <Segment>
+        <Header as="h3">Members</Header>
+        <Grid columns={3} divided="vertically">
+          {membersList}
+        </Grid>
       </Segment>
     </>
   );
