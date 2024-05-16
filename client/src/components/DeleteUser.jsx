@@ -6,8 +6,7 @@ function DeleteUser({ user, setUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  function handleDelete(e) {
-    e.preventDefault();
+  function handleDelete() {
     fetch(`/api/users/${user.id}`, {
       method: "DELETE",
       headers: {

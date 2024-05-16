@@ -27,7 +27,7 @@ const routes = [
         element: <MyBands />,
       },
       {
-        path: "/my-bands/:id",
+        path: "/bands/:id",
         element: <ViewBand />,
       },
       {

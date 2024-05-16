@@ -5,42 +5,54 @@ from random import choice
 def create_users():
   users = []
   user1 = User()
-  user1.username='John Doe'
+  user1.username='john_doe'
+  user1.first_name='John'
+  user1.last_name='Doe'
   user1.password_hash='password'
   user1.email='johndoe@me.com'
   users.append(user1)
 
   user2 = User(
-    username='Jane Doe',
+    username='jane_doe',
+    first_name='Jane',
+    last_name='Doe',
     email='janedoe@me.com'
   )
   user2.password_hash = 'password_isa-Dumb0-Password'
   users.append(user2)
 
   user3 = User(
-    username='Keith Richards',
-    email='keith@me.com'
+      username='keith_richards',
+      first_name='Keith',
+      last_name='Richards',
+      email='keith@me.com'
   )
   user3.password_hash = 'guitar'
   users.append(user3)
 
   user4 = User(
-    username='Percy McNeally',
-    email='percy@me.com'
+      username='percy_mcneally',
+      first_name='Percy',
+      last_name='McNeally',
+      email='percy@me.com'
   )
   user4.password_hash = 'lightning-thief'
   users.append(user4)
 
   user5 = User(
-    username='Dave Grohl',
-    email='dave@me.com'
+      username='dave_grohl',
+      first_name='Dave',
+      last_name='Grohl',
+      email='dave@me.com'
   )
   user5.password_hash = 'MyHeRo'
   users.append(user5)
 
   user6 = User(
-    username='Mick Jagger',
-    email='mick@me.com'
+      username='mick_jagger',
+      first_name='Mick',
+      last_name='Jagger',
+      email='mick@me.com'
   )
   user6.password_hash = 'black__betty'
   users.append(user6)

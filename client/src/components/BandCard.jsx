@@ -24,13 +24,13 @@ function BandCard({ band }) {
       </CardContent>
       <CardContent extra>
         {user.id === band.owner.id ? (
-          <NavLink to={`/my-bands/${band.id}`}>
+          <NavLink to={`/bands/${band.id}`}>
             <Button basic color="green">
               Manage
             </Button>
           </NavLink>
         ) : (
-          <NavLink to={`/my-bands/${band.id}`}>
+          <NavLink to={`/bands/${band.id}`}>
             <Button basic color="blue">
               View
             </Button>

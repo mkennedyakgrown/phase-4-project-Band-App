@@ -3,6 +3,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from sqlalchemy import ForeignKey
+from re import search
 
 from config import db, bcrypt
 class User(db.Model, SerializerMixin):
@@ -10,6 +11,8 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String)
     email = db.Column(db.String)
 
@@ -26,10 +29,40 @@ class User(db.Model, SerializerMixin):
     def validate_username(self, key, name):
         if name == '':
             raise ValueError('Username cannot be an empty string')
+        elif type(name) is not str:
+            raise ValueError('Username must be a string')
+        elif ' ' in name:
+            raise ValueError('Username cannot contain spaces')
         elif self.query.filter_by(username=name).first() is not None:
             raise ValueError('This name already exists')
         else:
             return name
+        
+    @validates('first_name')
+    def validate_first_name(self, key, name):
+        if name == '':
+            raise ValueError('First name cannot be empty')
+        elif type(name) is not str:
+            raise ValueError('First name must use letters only')
+        elif ' ' in name:
+            raise ValueError('First name cannot contain spaces')
+        elif search(r"[^\w]", name):
+            raise ValueError('First name cannot contain special characters')
+        else:
+            return name.capitalize()
+
+    @validates('last_name')
+    def validate_last_name(self, key, name):
+        if name == '':
+            raise ValueError('Last name cannot be empty')
+        elif type(name) is not str:
+            raise ValueError('Last name must use letters only')
+        elif ' ' in name:
+            raise ValueError('Last name cannot contain spaces')
+        elif search(r"[^\w]", name):
+            raise ValueError('First name cannot contain special characters')
+        else:
+            return name.capitalize()
 
     @hybrid_property
     def password_hash(self):

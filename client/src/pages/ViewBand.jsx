@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useOutletContext, useParams, NavLink } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import {
   Header,
   Divider,
@@ -23,7 +25,6 @@ function ViewBand() {
       .then((r) => r.json())
       .then((data) => {
         setBand(data);
-        console.log(`Band: ${data}`);
       });
   }, []);
 

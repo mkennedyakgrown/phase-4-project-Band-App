@@ -11,6 +11,8 @@ import {
 
 function SignupForm({ onLogin }) {
   const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [email, setEmail] = useState("");
@@ -29,10 +31,12 @@ function SignupForm({ onLogin }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username,
-        password,
+        username: username,
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
         password_confirmation: passwordConfirmation,
-        email,
+        email: email,
       }),
     }).then((r) => {
       setIsLoading(false);
@@ -59,6 +63,26 @@ function SignupForm({ onLogin }) {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           autoComplete="username"
+        />
+      </FormField>
+      <FormField>
+        <Label htmlFor="first_name">First Name</Label>
+        <Input
+          id="first_name"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          autoComplete="first-name"
+        />
+      </FormField>
+      <FormField>
+        <Label htmlFor="last_name">Last Name</Label>
+        <Input
+          id="last_name"
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          autoComplete="last-name"
         />
       </FormField>
       <FormField>

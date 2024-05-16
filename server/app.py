@@ -14,12 +14,15 @@ class Signup(Resource):
         json = request.get_json()
         user = User(
           username=json.get('username', ''),
+          first_name=json.get('first_name', ''),
+          last_name=json.get('last_name', ''),
           email=json.get('email', '')
         )
         user.password_hash = json.get('password', '')
         try:
             db.session.add(user)
             db.session.commit()
+            user = User.query.filter(User.username == user.username).first()
             session['user_id'] = user.id
             return user_dict(user), 201
         except:
@@ -175,6 +178,8 @@ def user_dict(user):
   return {
     'id': user.id,
     'username': user.username,
+    'first_name': user.first_name,
+    'last_name': user.last_name,
     'email': user.email,
     'owned_bands': [band.to_dict() for band in user.owned_bands],
     'member_bands': [band.to_dict() for band in user.member_bands],
