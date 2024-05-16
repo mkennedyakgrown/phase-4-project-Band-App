@@ -6,6 +6,7 @@ import InstrumentsList from "./InstrumentsList";
 import SongsList from "./SongsList";
 import EditUserName from "./EditUserName";
 import EditEmail from "./EditEmail";
+import DeleteUser from "./DeleteUser";
 
 function UserInfo({ currUser }) {
   const { user, setUser } = useOutletContext();
@@ -38,6 +39,11 @@ function UserInfo({ currUser }) {
         <Header as="h3">Songs Played</Header>
         <SongsList songs={currUser.songs} currUser={currUser} />
       </Segment>
+      {currUser.id === user.id ? (
+        <Segment>
+          <DeleteUser user={currUser} setUser={setUser} />
+        </Segment>
+      ) : null}
     </SegmentGroup>
   );
 }

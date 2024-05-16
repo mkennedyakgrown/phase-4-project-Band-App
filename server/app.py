@@ -129,6 +129,13 @@ class UserById(Resource):
     session['user_id'] = user.id
     return user_dict(user)
   
+  def delete(self, user_id):
+    user = User.query.filter_by(id=user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    session['user_id'] = None
+    return {'message': 'User deleted'}, 204
+  
 class UserByUsername(Resource):
   
   def get(self, username):
