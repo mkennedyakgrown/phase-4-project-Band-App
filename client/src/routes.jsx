@@ -4,7 +4,6 @@ import Login from "./pages/Login";
 import MyBands from "./pages/MyBands";
 import Home from "./pages/Home";
 import ViewBand from "./pages/ViewBand";
-import ManageBand from "./pages/ManageBand";
 import Profile from "./pages/Profile";
 import CreateNewBand from "./pages/CreateNewBand";
 import ErrorPage from "./pages/ErrorPage";
@@ -30,10 +29,6 @@ const routes = [
       {
         path: "/my-bands/:id",
         element: <ViewBand />,
-      },
-      {
-        path: "/my-bands/manage/:id",
-        element: <ManageBand />,
       },
       {
         path: "/users/:username",
