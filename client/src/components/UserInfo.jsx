@@ -28,7 +28,7 @@ function UserInfo({ currUser }) {
       </Segment>
       <Segment>
         <Header as="h3">Instruments</Header>
-        <InstrumentsList instruments={currUser.instruments} />
+        <InstrumentsList user={user} setUser={setUser} currUser={currUser} />
       </Segment>
       <Segment>
         <Header as="h3">Songs Played</Header>

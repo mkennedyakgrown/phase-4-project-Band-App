@@ -122,6 +122,8 @@ class UserById(Resource):
       user.username = json.get('username')
     if json.get('email'):
       user.email = json.get('email')
+    if json.get('instruments'):
+      user.instruments = [Instrument.query.filter_by(id=instrument['id']).first() for instrument in json.get('instruments')]
     db.session.commit()
     
     session['user_id'] = user.id
@@ -138,6 +140,12 @@ class Genres(Resource):
     genres = Genre.query.all()
     return [genre.to_dict() for genre in genres]
   
+class Instruments(Resource):
+  
+  def get(self):
+    instruments = Instrument.query.all()
+    return [instrument.to_dict() for instrument in instruments]
+  
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Login, '/login')
@@ -150,6 +158,7 @@ api.add_resource(UserByUsername, '/users/<string:username>')
 api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
 api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 api.add_resource(Genres, '/genres')
+api.add_resource(Instruments, '/instruments')
 
 def user_dict(user):
   return {
