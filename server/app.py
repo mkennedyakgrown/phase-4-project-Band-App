@@ -124,6 +124,10 @@ class UserById(Resource):
       user.email = json.get('email')
     if json.get('instruments'):
       user.instruments = [Instrument.query.filter_by(id=instrument['id']).first() for instrument in json.get('instruments')]
+    if json.get('new_password') and json.get('previous_password'):
+      if user.authenticate(json.get('previous_password')) == True:
+        user.password_hash = json.get('new_password')
+      else: return {'message': 'Invalid previous password'}, 401
     db.session.commit()
     
     session['user_id'] = user.id
