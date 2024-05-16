@@ -10,7 +10,7 @@ import {
   GridColumn,
   GridRow,
 } from "semantic-ui-react";
-import UserCard from "../components/BandMemberCard";
+import BandMembersList from "../components/BandMembersList";
 
 function ViewBand() {
   const { user, userBands } = useOutletContext();
@@ -27,28 +27,12 @@ function ViewBand() {
       });
   }, []);
 
-  let membersList = [];
-  if (band.name !== undefined) {
-    const membersCards = band.members.map((member) => {
-      return (
-        <GridColumn>
-          <UserCard
-            key={member.id}
-            user={member}
-            sessionUser={user}
-            band={band}
-          />
-        </GridColumn>
-      );
-    });
-    while (membersCards.length > 0) {
-      membersList.push(<GridRow>{membersCards.splice(0, 3)}</GridRow>);
-    }
-  }
-
   return (
     <>
       <Header as="h1">{band.name ? band.name : "Loading Band"}</Header>
+      <Header as="h3">
+        Genre: {band.genre ? band.genre.name : "Loading Genre"}
+      </Header>
       <Divider />
       <Segment>
         <Header as="h3">
@@ -58,9 +42,7 @@ function ViewBand() {
       </Segment>
       <Segment>
         <Header as="h3">Members</Header>
-        <Grid columns={3} divided="vertically">
-          {membersList}
-        </Grid>
+        <BandMembersList user={user} band={band} />
       </Segment>
     </>
   );
