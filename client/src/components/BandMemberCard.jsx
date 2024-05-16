@@ -1,27 +1,33 @@
 import { useState } from "react";
 import { Card, Accordion } from "semantic-ui-react";
+import { useOutletContext } from "react-router-dom";
 import RemoveMemeberButton from "./RemoveMemberButton";
 
-function BandMemberCard({ user, sessionUser, band }) {
+function BandMemberCard({ member, band, setBand }) {
+  const { user } = useOutletContext();
   const [isActive, setIsActive] = useState(false);
-  const bands = user.member_bands.map((band) => band.name).join(", ");
-  console.log(bands);
+  const bands = member.member_bands.map((band) => band.name).join(", ");
+
   return (
     <Card>
       <Card.Content>
-        <Card.Header>{user.username}</Card.Header>
-        <Card.Meta>{user.email}</Card.Meta>
+        <Card.Header>{member.username}</Card.Header>
+        <Card.Meta>{member.email}</Card.Meta>
         <Card.Description>
           Instruments:{" "}
-          {user.instruments.map((instrument) => instrument.name).join(", ")}
+          {member.instruments.map((instrument) => instrument.name).join(", ")}
           <Accordion onClick={() => setIsActive(!isActive)}>
             <Accordion.Title active={isActive} index={0}></Accordion.Title>
             <Accordion.Content active={isActive}>
               Member of: {bands}
             </Accordion.Content>
           </Accordion>
-          {sessionUser.id === band.owner.id && (
-            <RemoveMemeberButton user={user} band={band} />
+          {user.id === band.owner.id && (
+            <RemoveMemeberButton
+              member={member}
+              band={band}
+              setBand={setBand}
+            />
           )}
         </Card.Description>
       </Card.Content>

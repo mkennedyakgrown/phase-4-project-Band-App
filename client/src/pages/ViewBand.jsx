@@ -13,7 +13,7 @@ import {
 import BandMembersList from "../components/BandMembersList";
 
 function ViewBand() {
-  const { user, userBands } = useOutletContext();
+  const { user } = useOutletContext();
   const [band, setBand] = useState({});
 
   const { id } = useParams();
@@ -42,7 +42,7 @@ function ViewBand() {
       </Segment>
       <Segment>
         <Header as="h3">Members</Header>
-        <BandMembersList user={user} band={band} />
+        <BandMembersList band={band} setBand={setBand} />
       </Segment>
     </>
   );

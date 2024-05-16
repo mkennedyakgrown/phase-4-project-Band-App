@@ -5,7 +5,6 @@ import "./App.css";
 
 function App() {
   const [user, setUser] = useState({});
-  const [userBands, setUserBands] = useState([]);
 
   // check if user is logged in
   useEffect(() => {
@@ -18,24 +17,13 @@ function App() {
       }
     });
   }, []);
-  // set user bands when user is logged in or logged out
-  useEffect(() => {
-    if (user.id) {
-      fetch(`/api/users/bands/${user.id}`)
-        .then((r) => r.json())
-        .then((data) => {
-          console.log("Loading User Bands");
-          setUserBands(data);
-        });
-    }
-  }, [user]);
 
   return (
     <>
       <header className="App-header">
         <NavBar user={user} setUser={setUser} />
       </header>
-      <Outlet context={{ user, setUser, userBands, setUserBands }} />
+      <Outlet context={{ user, setUser }} />
     </>
   );
 }

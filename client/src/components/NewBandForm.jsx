@@ -10,7 +10,6 @@ import {
 import { useOutletContext } from "react-router-dom";
 
 function NewBandForm({ genres }) {
-  const { userBands, setUserBands } = useOutletContext();
   const [bandOptions, setBandOptions] = useState({});
 
   let genreOptions = [];
@@ -38,7 +37,6 @@ function NewBandForm({ genres }) {
     })
       .then((r) => r.json())
       .then((data) => {
-        setUserBands([...userBands, data]);
         setBandOptions({});
       });
   }

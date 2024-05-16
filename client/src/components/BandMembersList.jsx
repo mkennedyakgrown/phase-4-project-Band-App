@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import BandMemberCard from "./BandMemberCard";
 
-function BandMembersList({ user, band }) {
+function BandMembersList({ band, setBand }) {
   let membersList = [];
   if (band.name !== undefined) {
     const membersCards = band.members.map((member) => {
@@ -16,9 +16,9 @@ function BandMembersList({ user, band }) {
         <GridColumn>
           <BandMemberCard
             key={member.id}
-            user={member}
-            sessionUser={user}
+            member={member}
             band={band}
+            setBand={setBand}
           />
         </GridColumn>
       );
