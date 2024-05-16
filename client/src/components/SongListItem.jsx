@@ -8,23 +8,31 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-function SongListItem({ song, activeIndex, setActiveIndex }) {
+function SongListItem({ song, activeIndex, setActiveIndex, currUser }) {
   let members = [];
-  let instruments = [];
+  let bandName = "";
   if (song) {
-    members = song.members.map((member) => (
-      <Link
-        key={`song-${song.id}-member-${member.id}`}
-        to={`/users/${member.username}`}
-      >
-        <ListItem key={member.id}>{member.name}</ListItem>
-      </Link>
-    ));
-    instruments = song.instruments.map((instrument) => (
-      <ListItem key={`song-${song.id}-instrument-${instrument.id}`}>
-        {instrument.name}
-      </ListItem>
-    ));
+    members = song.members.map((member) => {
+      const instrument = song.songs_users_instruments.filter(
+        (inst) => inst.user_id === member.id
+      )[0].instrument.name;
+      return (
+        <ListItem key={member.id}>
+          <Link
+            key={`song-${song.id}-member-${member.id}`}
+            to={`/users/${member.username}`}
+          >
+            {member.username}
+          </Link>{" "}
+          - {instrument}
+        </ListItem>
+      );
+    });
+    if (currUser) {
+      bandName = currUser.member_bands.filter(
+        (band) => band.id === song.band_id
+      )[0].name;
+    }
   }
   return (
     <ListItem key={song.id}>
@@ -42,13 +50,10 @@ function SongListItem({ song, activeIndex, setActiveIndex }) {
             {song.name}
           </AccordionTitle>
           <Accordion.Content active={activeIndex === song.id}>
-            {/* <Header as="h3">Band: {song.band.name}</Header> */}
+            <Header as="h3">Band:</Header>
+            <p>{bandName}</p>
             <Header as="h3">Members:</Header>
             <List>{members.length === 0 ? "No Members" : members}</List>
-            <Header as="h3">Instruments:</Header>
-            <List>
-              {instruments.length === 0 ? "No Instruments" : instruments}
-            </List>
           </Accordion.Content>
         </Accordion>
       </Card>

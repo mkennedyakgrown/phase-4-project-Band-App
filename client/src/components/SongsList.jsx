@@ -2,7 +2,7 @@ import { useState } from "react";
 import { List } from "semantic-ui-react";
 import SongListItem from "./SongListItem";
 
-function SongsList({ songs }) {
+function SongsList({ songs, currUser }) {
   const [activeIndex, setActiveIndex] = useState(0);
   let displaySongs = [];
   if (songs) {
@@ -12,6 +12,7 @@ function SongsList({ songs }) {
         song={song}
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
+        currUser={currUser}
       />
     ));
   }

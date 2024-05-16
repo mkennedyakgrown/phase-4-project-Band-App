@@ -86,7 +86,7 @@ class Song(db.Model, SerializerMixin):
     members = association_proxy('songs_users_instruments', 'member')
     songs_users_instruments = db.relationship('SongUserInstrument', back_populates='song', cascade='all, delete-orphan')
 
-    serialize_rules = ('instruments', 'members', '-band', '-songs_users_instruments')
+    serialize_rules = ('instruments', 'members', '-band', 'songs_users_instruments')
 
     @validates('name')
     def validate_name(self, key, name):
@@ -148,7 +148,7 @@ class SongUserInstrument(db.Model, SerializerMixin):
     member = db.relationship('User', back_populates='songs_users_instruments', uselist=False)
     instrument = db.relationship('Instrument', back_populates='songs_users_instruments', uselist=False)
 
-    serialize_rules = ('-member', '-song', '-instrument')
+    serialize_rules = ('-member', '-song', 'instrument')
 
         
 users_bands = db.Table('users_bands',

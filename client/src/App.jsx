@@ -14,8 +14,6 @@ function App() {
       if (r.ok) {
         r.json().then((data) => {
           setUser(data);
-          console.log(`User: ${data.username}`);
-          console.log(data);
         });
       }
     });
@@ -28,7 +26,6 @@ function App() {
         .then((data) => {
           console.log("Loading User Bands");
           setUserBands(data);
-          console.log(`User Bands: ${data}`);
         });
     }
   }, [user]);
