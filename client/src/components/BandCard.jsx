@@ -15,6 +15,8 @@ function BandCard({ band }) {
       <CardContent>
         <CardHeader>{band.name}</CardHeader>
         <CardDescription>
+          Genre: {band.genre.name}
+          <br />
           Managed By: {band.owner.username}
           <br />
           Members: {bandMembers}

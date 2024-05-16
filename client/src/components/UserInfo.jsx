@@ -11,6 +11,7 @@ import {
 } from "semantic-ui-react";
 import BandsList from "./BandsList";
 import InstrumentsList from "./InstrumentsList";
+import SongsList from "./SongsList";
 
 function UserInfo({ currUser }) {
   return (
@@ -31,6 +32,10 @@ function UserInfo({ currUser }) {
       <Segment>
         <Header as="h3">Instruments</Header>
         <InstrumentsList instruments={currUser.instruments} />
+      </Segment>
+      <Segment>
+        <Header as="h3">Songs Played</Header>
+        <SongsList songs={currUser.songs} />
       </Segment>
     </SegmentGroup>
   );
