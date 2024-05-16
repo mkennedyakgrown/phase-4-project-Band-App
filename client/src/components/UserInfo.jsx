@@ -5,6 +5,7 @@ import BandsList from "./BandsList";
 import InstrumentsList from "./InstrumentsList";
 import SongsList from "./SongsList";
 import EditUserName from "./EditUserName";
+import EditEmail from "./EditEmail";
 
 function UserInfo({ currUser }) {
   const { user, setUser } = useOutletContext();
@@ -21,6 +22,9 @@ function UserInfo({ currUser }) {
           <Icon name="mail" />
           {currUser.email}
         </a>
+        {currUser.id === user.id ? (
+          <EditEmail user={user} setUser={setUser} currUser={currUser} />
+        ) : null}
       </Segment>
       <Segment>
         <Header as="h3">Member of Bands:</Header>
