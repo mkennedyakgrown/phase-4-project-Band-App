@@ -1,11 +1,10 @@
-import { useOutletContext, Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Header, SegmentGroup, Segment } from "semantic-ui-react";
 import UserInfo from "../components/UserInfo";
 
 function Profile() {
   const [currUser, setCurrUser] = useState({});
-  const { user } = useOutletContext();
   const { username } = useParams();
 
   useEffect(() => {

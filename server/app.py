@@ -114,6 +114,18 @@ class UserById(Resource):
   
   def get(self, user_id):
     return user_dict(User.query.filter_by(id=user_id).first())
+
+  def patch(self, user_id):
+    user = User.query.filter_by(id=user_id).first()
+    json = request.get_json()
+    if json.get('username'):
+      user.username = json.get('username')
+    if json.get('email'):
+      user.email = json.get('email')
+    db.session.commit()
+    
+    session['user_id'] = user.id
+    return user_dict(user)
   
 class UserByUsername(Resource):
   
