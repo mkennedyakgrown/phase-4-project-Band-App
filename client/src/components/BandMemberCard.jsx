@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, Accordion } from "semantic-ui-react";
 import { useOutletContext } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import RemoveMemeberButton from "./RemoveMemberButton";
 
 function BandMemberCard({ member, band, setBand }) {
@@ -11,8 +12,17 @@ function BandMemberCard({ member, band, setBand }) {
   return (
     <Card>
       <Card.Content>
-        <Card.Header>{member.username}</Card.Header>
-        <Card.Meta>{member.email}</Card.Meta>
+        <Card.Header>
+          {member.first_name} {member.last_name}
+        </Card.Header>
+        <Card.Meta>
+          <a href={`mailto:${member.email}`}>{member.email}</a>
+        </Card.Meta>
+        <Card.Meta>
+          <NavLink to={`/users/${member.username}`}>
+            Go to {member.username}'s profile
+          </NavLink>
+        </Card.Meta>
         <Card.Description>
           Instruments:{" "}
           {member.instruments.map((instrument) => instrument.name).join(", ")}

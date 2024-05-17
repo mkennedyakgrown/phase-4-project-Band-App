@@ -14,7 +14,9 @@ function UserInfo({ currUser }) {
   return (
     <SegmentGroup fluid="true">
       <Segment>
-        <Header as="h2">{currUser.username}</Header>
+        <Header as="h2">
+          {currUser.first_name} {currUser.last_name}
+        </Header>
         {currUser.id === user.id ? (
           <div>
             <EditUserName user={currUser} setUser={setUser} />

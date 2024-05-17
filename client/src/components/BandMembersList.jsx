@@ -13,7 +13,7 @@ function BandMembersList({ band, setBand }) {
   if (band.name !== undefined) {
     const membersCards = band.members.map((member) => {
       return (
-        <GridColumn>
+        <GridColumn key={`gridColumn${member.id}`}>
           <BandMemberCard
             key={member.id}
             member={member}
@@ -24,7 +24,11 @@ function BandMembersList({ band, setBand }) {
       );
     });
     while (membersCards.length > 0) {
-      membersList.push(<GridRow>{membersCards.splice(0, 3)}</GridRow>);
+      membersList.push(
+        <GridRow key={`gridRow${membersList.length}`}>
+          {membersCards.splice(0, 3)}
+        </GridRow>
+      );
     }
   }
 

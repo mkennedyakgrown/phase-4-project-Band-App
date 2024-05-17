@@ -160,6 +160,14 @@ class Instruments(Resource):
     instruments = Instrument.query.all()
     return [instrument.to_dict() for instrument in instruments]
   
+class SongById(Resource):
+  
+  def delete(self, song_id):
+    song = Song.query.filter_by(id=song_id).first()
+    db.session.delete(song)
+    db.session.commit()
+    return {'message': 'Song deleted'}, 204
+  
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Login, '/login')
@@ -173,6 +181,7 @@ api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
 api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 api.add_resource(Genres, '/genres')
 api.add_resource(Instruments, '/instruments')
+api.add_resource(SongById, '/songs/<int:song_id>')
 
 def user_dict(user):
   return {

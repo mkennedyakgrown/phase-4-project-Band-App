@@ -22,7 +22,7 @@ function SongListItem({ song, activeIndex, setActiveIndex, currUser }) {
             key={`song-${song.id}-member-${member.id}`}
             to={`/users/${member.username}`}
           >
-            {member.username}
+            {member.first_name} {member.last_name}
           </Link>{" "}
           - {instrument}
         </ListItem>
