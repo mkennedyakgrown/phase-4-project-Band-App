@@ -167,8 +167,6 @@ class SongById(Resource):
     json = request.get_json()
     if json.get('name'):
       song.name = json.get('name')
-    if json.get('songs_users_instruments'):
-      song.songs_users_instruments = [SongUserInstrument.query.filter_by(id=sui['id']).first() for sui in json.get('songs_users_instruments')]
     db.session.commit()
     return song.to_dict()
 
@@ -177,6 +175,14 @@ class SongById(Resource):
     db.session.delete(song)
     db.session.commit()
     return {'message': 'Song deleted'}, 204
+  
+class SongsUsersInstruments(Resource):
+  
+  def delete(self, id):
+    song_user_instrument = SongUserInstrument.query.filter_by(id=id).first()
+    db.session.delete(song_user_instrument)
+    db.session.commit()
+    return {'message': 'Song_user_instrument deleted'}, 204
   
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
@@ -192,6 +198,7 @@ api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 api.add_resource(Genres, '/genres')
 api.add_resource(Instruments, '/instruments')
 api.add_resource(SongById, '/songs/<int:song_id>')
+api.add_resource(SongsUsersInstruments, '/songs_users_instruments/<int:id>')
 
 def user_dict(user):
   return {

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import DeleteSongButton from "./DeleteSongButton";
+import AddMemberInstrumentForm from "./AddMemberInstrumentForm";
 
 function BandSongListItem({ song, band, setBand }) {
   const { user } = useOutletContext();
@@ -20,17 +21,14 @@ function BandSongListItem({ song, band, setBand }) {
 
   const formSchema = yup.object().shape({
     name: yup.string().required("Required"),
-    songs_users_instruments: yup.array(),
   });
 
   const formik = useFormik({
     initialValues: {
       name: song.name,
-      songs_users_instruments: song.songs_users_instruments,
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      console.log(values);
       fetch(`/api/songs/${song.id}`, {
         method: "PATCH",
         headers: {
@@ -56,15 +54,46 @@ function BandSongListItem({ song, band, setBand }) {
     },
   });
 
+  function removeSongUserInstrument(member, instrument) {
+    const song_user_instrument = song.songs_users_instruments.find((e) => {
+      return (
+        e.user_id === member.id && e.instrument_id === instrument.instrument.id
+      );
+    });
+    fetch(`/api/songs_users_instruments/${song_user_instrument.id}`, {
+      method: "DELETE",
+    });
+    setBand({
+      ...band,
+      songs: band.songs.map((s) => {
+        if (s.id === song.id) {
+          return {
+            ...s,
+            members: s.members.filter((m) => m.id !== member.id),
+          };
+        } else {
+          return s;
+        }
+      }),
+    });
+  }
+
   const membersList = song.members
     ? song.members.map((member) => {
         const instrument = song.songs_users_instruments.filter(
           (inst) => inst.user_id === member.id
-        );
+        )[0];
+        console.log(instrument);
         return (
           <List.Item key={member.id}>
-            {member.first_name} {member.last_name}:{" "}
-            {instrument[0].instrument.name}
+            {member.first_name} {member.last_name}: {instrument.instrument.name}
+            {isActive ? (
+              <Button
+                onClick={() => removeSongUserInstrument(member, instrument)}
+              >
+                Remove
+              </Button>
+            ) : null}
           </List.Item>
         );
       })
@@ -76,7 +105,7 @@ function BandSongListItem({ song, band, setBand }) {
         {band.owner_id === user.id ? (
           <>
             <Button onClick={() => setIsActive(!isActive)}>
-              {isActive ? "Cancel" : "Edit"}
+              {isActive ? "Done" : "Edit"}
             </Button>
             <br />
           </>
