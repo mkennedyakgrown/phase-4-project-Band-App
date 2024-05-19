@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 import pdb
 
 from config import app, db, api
-from models import User, Band, Song, Instrument, Genre
+from models import User, Band, Song, Instrument, Genre, SongUserInstrument
 
 class Signup(Resource):
     
@@ -162,6 +162,16 @@ class Instruments(Resource):
   
 class SongById(Resource):
   
+  def patch(self, song_id):
+    song = Song.query.filter_by(id=song_id).first()
+    json = request.get_json()
+    if json.get('name'):
+      song.name = json.get('name')
+    if json.get('songs_users_instruments'):
+      song.songs_users_instruments = [SongUserInstrument.query.filter_by(id=sui['id']).first() for sui in json.get('songs_users_instruments')]
+    db.session.commit()
+    return song.to_dict()
+
   def delete(self, song_id):
     song = Song.query.filter_by(id=song_id).first()
     db.session.delete(song)
