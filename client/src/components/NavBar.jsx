@@ -21,16 +21,7 @@ function NavBar({ user, setUser }) {
   }
 
   return (
-    <Menu fixed="top" className="navBar">
-      <MenuItem
-        name="home"
-        as={NavLink}
-        to="/"
-        className="nav-link"
-        onClick={handleItemClick}
-      >
-        Home
-      </MenuItem>
+    <Menu fixed="top" className="navBar" fluid>
       <MenuItem
         name="my-bands"
         as={NavLink}

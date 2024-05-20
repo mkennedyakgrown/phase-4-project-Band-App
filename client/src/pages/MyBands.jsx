@@ -15,8 +15,7 @@ function MyBands() {
     <>
       {user.id ? null : <Navigate to="/login" />}
       <Header as="h1">My Bands</Header>
-      {displayBands.length === 0 ? <p>No Bands to Display</p> : null}{" "}
-      {displayBands}
+      {displayBands.length === 0 ? <p>No Bands to Display</p> : displayBands}
     </>
   );
 }
