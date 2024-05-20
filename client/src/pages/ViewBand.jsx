@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import { useOutletContext, useParams, NavLink, Form } from "react-router-dom";
+import { useOutletContext, useParams, Form } from "react-router-dom";
 import {
   Header,
   Divider,
   Segment,
-  List,
-  Card,
-  Grid,
-  GridColumn,
-  GridRow,
   Button,
   FormInput,
   FormField,
@@ -20,6 +15,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import DeleteBandButton from "../components/DeleteBandButton";
 import AddSongForm from "../components/AddSongForm";
+import AddMemberForm from "../components/AddMemberForm";
 
 function ViewBand() {
   const { user } = useOutletContext();
@@ -142,6 +138,9 @@ function ViewBand() {
       </Segment>
       <Segment>
         <Header as="h2">Members</Header>
+        {user.id === band.owner_id ? (
+          <AddMemberForm band={band} setBand={setBand} />
+        ) : null}
         <BandMembersList band={band} setBand={setBand} />
       </Segment>
       <Segment>

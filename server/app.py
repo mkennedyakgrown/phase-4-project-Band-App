@@ -90,6 +90,12 @@ class BandById(Resource):
       band.name = json.get('name')
     if 'genre_id' in json:
       band.genre_id = json.get('genre_id')
+    if 'username' in json:
+      user = User.query.filter_by(username=json.get('username')).first()
+      if user:
+        band.members.append(user)
+      else:
+        return {'message': 'User not found'}, 404
     db.session.commit()
     return band.to_dict()
 
