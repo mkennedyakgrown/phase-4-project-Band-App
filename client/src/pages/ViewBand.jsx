@@ -18,6 +18,7 @@ import BandMembersList from "../components/BandMembersList";
 import BandSongsList from "../components/BandSongsList";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import DeleteBandButton from "../components/DeleteBandButton";
 
 function ViewBand() {
   const { user } = useOutletContext();
@@ -147,6 +148,9 @@ function ViewBand() {
         <Divider />
         <BandSongsList band={band} setBand={setBand} />
       </Segment>
+      {user.id === band.owner_id ? (
+        <DeleteBandButton band={band} user={user} />
+      ) : null}
     </>
   );
 }

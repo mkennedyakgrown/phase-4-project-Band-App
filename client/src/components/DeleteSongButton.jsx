@@ -20,7 +20,7 @@ function DeleteSongButton({ song, band, setBand }) {
   });
   return (
     <Button type="submit" onClick={formik.handleSubmit}>
-      Delete
+      Delete Song
     </Button>
   );
 }

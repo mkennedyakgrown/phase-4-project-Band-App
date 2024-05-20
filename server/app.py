@@ -92,6 +92,16 @@ class BandById(Resource):
       band.genre_id = json.get('genre_id')
     db.session.commit()
     return band.to_dict()
+
+  def delete(self, band_id):
+    band = Band.query.filter_by(id=band_id).first()
+    if band.owner_id != session['user_id']:
+      return {'message': 'You do not have permission to delete this band'}, 401
+    if band is None:
+      return {'message': 'Band not found'}, 404
+    db.session.delete(band)
+    db.session.commit()
+    return
   
 class BandMembers(Resource):
    
