@@ -1,4 +1,4 @@
-import { Header } from "semantic-ui-react";
+import { Divider, Grid, Header } from "semantic-ui-react";
 import { useOutletContext, Navigate } from "react-router-dom";
 
 function Home() {
@@ -9,6 +9,8 @@ function Home() {
       <main>
         <br />
         <Header as="h1">Home</Header>
+        <Divider />
+        <Grid columns={2}></Grid>
       </main>
     </>
   );
