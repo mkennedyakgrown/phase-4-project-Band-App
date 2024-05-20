@@ -161,6 +161,9 @@ class Instruments(Resource):
     return [instrument.to_dict() for instrument in instruments]
   
 class SongById(Resource):
+
+  def get(self, song_id):
+    return Song.query.filter_by(id=song_id).first().to_dict()
   
   def patch(self, song_id):
     song = Song.query.filter_by(id=song_id).first()
@@ -177,9 +180,23 @@ class SongById(Resource):
     return {'message': 'Song deleted'}, 204
   
 class SongsUsersInstruments(Resource):
+
+  def post(self):
+    json = request.get_json()
+    song_id = json.get('song_id')
+    user_id = json.get('user_id')
+    instrument_id = json.get('instrument_id')
+    song_user_instrument = SongUserInstrument(song_id=song_id, user_id=user_id, instrument_id=instrument_id)
+    db.session.add(song_user_instrument)
+    db.session.commit()
+    return song_user_instrument.to_dict()
+  
+class SongsUsersInstrumentsById(Resource):
   
   def delete(self, id):
     song_user_instrument = SongUserInstrument.query.filter_by(id=id).first()
+    if song_user_instrument is None:
+      return {'message': 'Song_user_instrument not found'}, 404
     db.session.delete(song_user_instrument)
     db.session.commit()
     return {'message': 'Song_user_instrument deleted'}, 204
@@ -198,7 +215,8 @@ api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 api.add_resource(Genres, '/genres')
 api.add_resource(Instruments, '/instruments')
 api.add_resource(SongById, '/songs/<int:song_id>')
-api.add_resource(SongsUsersInstruments, '/songs_users_instruments/<int:id>')
+api.add_resource(SongsUsersInstruments, '/songs_users_instruments')
+api.add_resource(SongsUsersInstrumentsById, '/songs_users_instruments/<int:id>')
 
 def user_dict(user):
   return {

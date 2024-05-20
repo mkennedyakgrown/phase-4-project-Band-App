@@ -83,7 +83,6 @@ function BandSongListItem({ song, band, setBand }) {
         const instrument = song.songs_users_instruments.filter(
           (inst) => inst.user_id === member.id
         )[0];
-        console.log(instrument);
         return (
           <List.Item key={member.id}>
             {member.first_name} {member.last_name}: {instrument.instrument.name}
@@ -130,6 +129,9 @@ function BandSongListItem({ song, band, setBand }) {
         ) : null}
       </ItemHeader>
       <List>{membersList}</List>
+      {isActive ? (
+        <AddMemberInstrumentForm song={song} band={band} setBand={setBand} />
+      ) : null}
       {isActive ? (
         <DeleteSongButton song={song} band={band} setBand={setBand} />
       ) : null}

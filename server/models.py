@@ -183,6 +183,15 @@ class SongUserInstrument(db.Model, SerializerMixin):
 
     serialize_rules = ('-member', '-song', 'instrument')
 
+    @validates('instrument_id')
+    def validate_foreign_keys(self, key, value):
+        duplicates = db.session.query(SongUserInstrument).filter(SongUserInstrument.song_id == self.song_id and SongUserInstrument.user_id == self.user_id and SongUserInstrument.instrument_id == value).all()
+        if len(duplicates) > 1:
+            raise ValueError(f'This {type(self)} already exists: {self.song_id}, {self.user_id}, {value}')
+        else:
+            return value
+
+
         
 users_bands = db.Table('users_bands',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
