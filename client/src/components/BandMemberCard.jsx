@@ -7,7 +7,9 @@ import RemoveMemeberButton from "./RemoveMemberButton";
 function BandMemberCard({ member, band, setBand }) {
   const { user } = useOutletContext();
   const [isActive, setIsActive] = useState(false);
-  const bands = member.member_bands.map((band) => band.name).join(", ");
+  const bands = member.member_bands
+    ? member.member_bands.map((band) => band.name).join(", ")
+    : [];
 
   return (
     <Card>

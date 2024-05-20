@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext, useParams, NavLink } from "react-router-dom";
+import { useOutletContext, useParams, NavLink, Form } from "react-router-dom";
 import {
   Header,
   Divider,
@@ -9,13 +9,22 @@ import {
   Grid,
   GridColumn,
   GridRow,
+  Button,
+  FormInput,
+  FormField,
+  Dropdown,
 } from "semantic-ui-react";
 import BandMembersList from "../components/BandMembersList";
 import BandSongsList from "../components/BandSongsList";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function ViewBand() {
   const { user } = useOutletContext();
   const [band, setBand] = useState({});
+  const [genreIsActive, setGenreIsActive] = useState(false);
+  const [nameIsActive, setNameIsActive] = useState(false);
+  const [genres, setGenres] = useState([]);
 
   const { id } = useParams();
 
@@ -27,11 +36,78 @@ function ViewBand() {
       });
   }, []);
 
+  useEffect(() => {
+    fetch("/api/genres")
+      .then((r) => r.json())
+      .then((data) => {
+        setGenres(data);
+      });
+  }, []);
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required("Required"),
+    genre_id: yup.string().required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: band.name,
+      genre_id: band.genre_id,
+    },
+    onSubmit: (values) => {
+      fetch(`/api/bands/${band.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          setBand(data);
+          setNameIsActive(false);
+          setGenreIsActive(false);
+        });
+    },
+  });
+
+  const genreOptions = genres
+    ? genres.map((genre) => {
+        return {
+          key: genre.id,
+          text: genre.name,
+          value: genre.id,
+        };
+      })
+    : [];
+
   return (
     <>
       <Header as="h1">{band.name ? band.name : "Loading Band"}</Header>
       <Header as="h3">
         Genre: {band.genre ? band.genre.name : "Loading Genre"}
+        {user.id === band.owner_id ? (
+          <Button onClick={() => setGenreIsActive(!genreIsActive)}>
+            Edit Genre
+          </Button>
+        ) : null}
+        {genreIsActive ? (
+          <Form onSubmit={formik.handleSubmit}>
+            <FormField>
+              <Dropdown
+                placeholder="Select Genre"
+                fluid
+                selection
+                options={genreOptions}
+                value={formik.values.genre_id}
+                onChange={(e, { value }) =>
+                  formik.setFieldValue("genre_id", value)
+                }
+              />
+            </FormField>
+            <Button type="submit">Submit</Button>
+          </Form>
+        ) : null}
       </Header>
       <Divider />
       <Segment>

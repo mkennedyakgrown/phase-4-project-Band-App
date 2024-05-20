@@ -83,6 +83,16 @@ class BandById(Resource):
     band_dict['members'] = [user_dict(user) for user in band.members]
     return band_dict
   
+  def patch(self, band_id):
+    json = request.get_json()
+    band = Band.query.filter_by(id=band_id).first()
+    if 'name' in json:
+      band.name = json.get('name')
+    if 'genre_id' in json:
+      band.genre_id = json.get('genre_id')
+    db.session.commit()
+    return band.to_dict()
+  
 class BandMembers(Resource):
    
   def patch(self, band_id, user_id):
