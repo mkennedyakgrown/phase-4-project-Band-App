@@ -83,12 +83,32 @@ function ViewBand() {
 
   return (
     <>
-      <Header as="h1">{band.name ? band.name : "Loading Band"}</Header>
+      <Header as="h1">
+        {band.name ? band.name : "Loading Band"}
+        {user.id === band.owner_id ? (
+          <Button onClick={() => setNameIsActive(!nameIsActive)}>
+            {nameIsActive ? "Cancel" : "Edit Band Name"}
+          </Button>
+        ) : null}
+        {nameIsActive ? (
+          <Form onSubmit={formik.handleSubmit}>
+            <FormField>
+              <FormInput
+                name="name"
+                placeholder={band.name}
+                value={formik.values.name}
+                onChange={formik.handleChange}
+              />
+            </FormField>
+            <Button type="submit">Submit</Button>
+          </Form>
+        ) : null}
+      </Header>
       <Header as="h3">
         Genre: {band.genre ? band.genre.name : "Loading Genre"}
         {user.id === band.owner_id ? (
           <Button onClick={() => setGenreIsActive(!genreIsActive)}>
-            Edit Genre
+            {genreIsActive ? "Cancel" : "Edit Genre"}
           </Button>
         ) : null}
         {genreIsActive ? (
