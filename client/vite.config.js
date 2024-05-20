@@ -7,8 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target:
-          "export DATABASE_URI=postgresql://mattkennedy:Kv42t7VQJAGXxaD80los6jUF6l2oAJwg@dpg-cp5e4ei1hbls73fds3k0-a.ohio-postgres.render.com/band_app",
+        target: "http://127.0.0.1:5555",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
