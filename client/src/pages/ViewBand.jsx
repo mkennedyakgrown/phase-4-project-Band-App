@@ -19,6 +19,7 @@ import BandSongsList from "../components/BandSongsList";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import DeleteBandButton from "../components/DeleteBandButton";
+import AddSongForm from "../components/AddSongForm";
 
 function ViewBand() {
   const { user } = useOutletContext();
@@ -145,6 +146,7 @@ function ViewBand() {
       </Segment>
       <Segment>
         <Header as="h2">Songs</Header>
+        <AddSongForm band={band} setBand={setBand} />
         <Divider />
         <BandSongsList band={band} setBand={setBand} />
       </Segment>

@@ -180,6 +180,17 @@ class Instruments(Resource):
     instruments = Instrument.query.all()
     return [instrument.to_dict() for instrument in instruments]
   
+class Songs(Resource):
+
+  def post(self):
+    json = request.get_json()
+    name = json.get('name')
+    band_id = json.get('band_id')
+    song = Song(name=name, band_id=band_id)
+    db.session.add(song)
+    db.session.commit()
+    return song.to_dict()
+  
 class SongById(Resource):
 
   def get(self, song_id):
@@ -234,6 +245,7 @@ api.add_resource(BandsByUserId, '/users/bands/<int:user_id>')
 api.add_resource(BandMembers, '/bands/<int:band_id>/members/<int:user_id>')
 api.add_resource(Genres, '/genres')
 api.add_resource(Instruments, '/instruments')
+api.add_resource(Songs, '/songs')
 api.add_resource(SongById, '/songs/<int:song_id>')
 api.add_resource(SongsUsersInstruments, '/songs_users_instruments')
 api.add_resource(SongsUsersInstrumentsById, '/songs_users_instruments/<int:id>')

@@ -41,7 +41,10 @@ function AddMemberInstrumentForm({ song, band, setBand }) {
         .then((data) => {
           fetch(`/api/songs/${song.id}`)
             .then((r) => r.json())
-            .then((data) => setCurrSong(data));
+            .then((data) => {
+              setCurrSong(data);
+              formik.resetForm();
+            });
         });
     },
   });
@@ -112,9 +115,7 @@ function AddMemberInstrumentForm({ song, band, setBand }) {
             />
           </FormInput>
         </FormField>
-        <Button type="submit" onClick={formik.handleSubmit}>
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </Form>
     </Card>
   );
