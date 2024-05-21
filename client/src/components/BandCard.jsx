@@ -8,10 +8,11 @@ import {
 import { NavLink, useOutletContext } from "react-router-dom";
 
 function BandCard({ band }) {
-  const { setCurrBand, user } = useOutletContext();
+  const { user } = useOutletContext();
   const bandMembers = band.members
     .map((member) => `${member.first_name} ${member.last_name}`)
     .join(", ");
+
   return (
     <Card key={band.id}>
       <CardContent>

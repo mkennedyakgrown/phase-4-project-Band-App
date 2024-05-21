@@ -8,31 +8,38 @@ import {
   AccordionTitle,
   AccordionContent,
 } from "semantic-ui-react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function EditEmail({ user, setUser, currUser }) {
   const [isActive, setIsActive] = useState(false);
   const [email, setEmail] = useState(user.email);
 
-  useEffect(() => {
-    setEmail(user.email);
-  }, [user]);
+  const formSchema = yup.object().shape({
+    email: yup.string().email().required("Required"),
+  });
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    fetch(`/api/users/${user.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then((updatedUser) => setUser(updatedUser));
-        currUser.email = email;
-        setIsActive(false);
-      }
-    });
-  }
+  const formik = useFormik({
+    initialValues: {
+      email: user.email,
+    },
+    validationSchema: formSchema,
+    onSubmit: (values) => {
+      fetch(`/api/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: values.email }),
+      }).then((r) => {
+        if (r.ok) {
+          r.json().then((updatedUser) => setUser(updatedUser));
+          currUser.email = values.email;
+          setIsActive(false);
+        }
+      });
+    },
+  });
 
   return (
     <Accordion>
@@ -42,13 +49,13 @@ function EditEmail({ user, setUser, currUser }) {
         </Button>
       </AccordionTitle>
       <AccordionContent active={isActive}>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormField>
             <Input
               id="email"
               type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formik.values.email}
+              onChange={formik.handleChange}
               autoComplete="email"
             />
             <Button type="submit">Submit</Button>
