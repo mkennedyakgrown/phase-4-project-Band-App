@@ -5,14 +5,12 @@ import {
   Label,
   List,
   Checkbox,
-  Button,
   FormGroup,
 } from "semantic-ui-react";
 
-function AddInstrumentForm({ user, selections, setSelections }) {
+function AddInstrumentForm({ user, formik }) {
   const [instruments, setInstruments] = useState([]);
   const userInstrumentIds = user.instruments.map((instrument) => instrument.id);
-  console.log(selections);
 
   useEffect(() => {
     fetch("/api/instruments")
@@ -31,9 +29,22 @@ function AddInstrumentForm({ user, selections, setSelections }) {
           name="instruments"
           value={instrument.id}
           onChange={() => {
-            !selections.includes(instrument)
-              ? setSelections([...selections, instrument])
-              : setSelections(selections.filter((e) => e.id !== instrument.id));
+            formik.values.selections == []
+              ? formik.setValues({
+                  instruments: formik.values.instruments,
+                  selections: [...formik.values.selections, instrument],
+                })
+              : !formik.values.selections.includes(instrument)
+              ? formik.setValues({
+                  instruments: formik.values.instruments,
+                  selections: [...formik.values.selections, instrument],
+                })
+              : formik.setValues({
+                  instruments: formik.values.instruments,
+                  selections: formik.values.selections.filter(
+                    (e) => e.id !== instrument.id
+                  ),
+                });
           }}
         />
       </FormField>
