@@ -129,9 +129,7 @@ function BandSongListItem({ song, band, setBand }) {
         ) : null}
       </ItemHeader>
       <List>{membersList}</List>
-      {isActive ? (
-        <AddMemberInstrumentForm song={song} band={band} setBand={setBand} />
-      ) : null}
+      {isActive ? <AddMemberInstrumentForm song={song} band={band} /> : null}
       {isActive ? (
         <DeleteSongButton song={song} band={band} setBand={setBand} />
       ) : null}

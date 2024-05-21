@@ -11,10 +11,9 @@ import {
   Label,
 } from "semantic-ui-react";
 
-function AddMemberInstrumentForm({ song, band, setBand }) {
+function AddMemberInstrumentForm({ song, band }) {
   const [memberOptions, setMemberOptions] = useState([]);
   const [instrumentOptions, setInstrumentOptions] = useState([]);
-  const [currSong, setCurrSong] = useState({ ...song });
 
   const formSchema = yup.object().shape({
     user_id: yup.number().required("Required"),
@@ -42,7 +41,6 @@ function AddMemberInstrumentForm({ song, band, setBand }) {
           fetch(`/api/songs/${song.id}`)
             .then((r) => r.json())
             .then((data) => {
-              setCurrSong(data);
               formik.resetForm();
             });
         });
