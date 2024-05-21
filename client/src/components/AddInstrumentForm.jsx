@@ -29,22 +29,15 @@ function AddInstrumentForm({ user, formik }) {
           name="instruments"
           value={instrument.id}
           onChange={() => {
-            formik.values.selections == []
-              ? formik.setValues({
-                  instruments: formik.values.instruments,
-                  selections: [...formik.values.selections, instrument],
-                })
-              : !formik.values.selections.includes(instrument)
-              ? formik.setValues({
-                  instruments: formik.values.instruments,
-                  selections: [...formik.values.selections, instrument],
-                })
-              : formik.setValues({
-                  instruments: formik.values.instruments,
-                  selections: formik.values.selections.filter(
-                    (e) => e.id !== instrument.id
-                  ),
-                });
+            !formik.values.selections.includes(instrument)
+              ? formik.setFieldValue("selections", [
+                  ...formik.values.selections,
+                  instrument,
+                ])
+              : formik.setFieldValue(
+                  "selections",
+                  formik.values.selections.filter((e) => e.id !== instrument.id)
+                );
           }}
         />
       </FormField>

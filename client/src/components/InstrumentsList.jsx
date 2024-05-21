@@ -52,12 +52,12 @@ function InstrumentsList({ user, setUser, currUser }) {
           {isActive ? (
             <Button
               onClick={() =>
-                formik.setValues({
-                  instruments: formik.values.instruments.filter((i) => {
+                formik.setFieldValue(
+                  "instruments",
+                  formik.values.instruments.filter((i) => {
                     return i.id !== instrument.id;
-                  }),
-                  selections: formik.values.selections,
-                })
+                  })
+                )
               }
             >
               Remove
