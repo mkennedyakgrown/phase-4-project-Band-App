@@ -13,13 +13,13 @@ function Profile() {
       .then((data) => {
         setCurrUser(data);
       });
-  }, [username]);
+  }, []);
 
   return (
     <>
       {username === "undefined" ? <Navigate to="/login" /> : null}
       <Header as="h1">Profile</Header>
-      <UserInfo currUser={currUser} />
+      <UserInfo currUser={currUser} setCurrUser={setCurrUser} />
     </>
   );
 }

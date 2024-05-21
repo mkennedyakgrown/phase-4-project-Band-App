@@ -149,6 +149,8 @@ class UserById(Resource):
     json = request.get_json()
     if json.get('username'):
       user.username = json.get('username')
+      user.first_name = json.get('first_name')
+      user.last_name = json.get('last_name')
     if json.get('email'):
       user.email = json.get('email')
     if json.get('instruments'):

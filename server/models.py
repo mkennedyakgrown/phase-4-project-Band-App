@@ -33,7 +33,7 @@ class User(db.Model, SerializerMixin):
             raise ValueError('Username must be a string')
         elif ' ' in name:
             raise ValueError('Username cannot contain spaces')
-        elif self.query.filter_by(username=name).first() is not None:
+        elif self.query.filter_by(username=name).first() is not None and name != self.username:
             raise ValueError('This name already exists')
         else:
             return name

@@ -9,7 +9,7 @@ import EditEmail from "./EditEmail";
 import DeleteUser from "./DeleteUser";
 import EditPassword from "./EditPassword";
 
-function UserInfo({ currUser }) {
+function UserInfo({ currUser, setCurrUser }) {
   const { user, setUser } = useOutletContext();
   return (
     <SegmentGroup fluid="true">
@@ -19,7 +19,11 @@ function UserInfo({ currUser }) {
         </Header>
         {currUser.id === user.id ? (
           <div>
-            <EditUserName user={currUser} setUser={setUser} />
+            <EditUserName
+              user={currUser}
+              setUser={setUser}
+              setCurrUser={setCurrUser}
+            />
             <EditPassword user={currUser} setUser={setUser} />
           </div>
         ) : null}
