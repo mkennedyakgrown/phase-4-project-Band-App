@@ -26,9 +26,15 @@ function BandMembersList({ band, setBand }) {
   }
 
   return (
-    <Grid columns={3} divided="vertically">
-      {membersList}
-    </Grid>
+    <>
+      {membersList.length >= 3 ? (
+        <Grid columns={3} divided="vertically">
+          {membersList}
+        </Grid>
+      ) : (
+        <Grid columns={1}>{membersList}</Grid>
+      )}
+    </>
   );
 }
 

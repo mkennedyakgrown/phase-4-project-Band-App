@@ -12,8 +12,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function NewBandForm({ genres }) {
-  // const [bandOptions, setBandOptions] = useState({});
-
   const navigate = useNavigate();
 
   const formSchema = yup.object().shape({
@@ -50,22 +48,6 @@ function NewBandForm({ genres }) {
       };
     });
   }
-
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   fetch("/api/bands", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: bandOptions.name,
-  //       genre_id: bandOptions.genre,
-  //     }),
-  //   })
-  //     .then((r) => r.json())
-  //     .then((data) => {});
-  // }
 
   function handleDropdownChange(e, { name, value }) {
     formik.setFieldValue(name, value);
