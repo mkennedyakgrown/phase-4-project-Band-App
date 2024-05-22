@@ -14,16 +14,19 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function EditUserName({ user, setUser, setCurrUser }) {
+  // State for toggling edit mode
   const [isActive, setIsActive] = useState(false);
 
   const navigate = useNavigate();
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     first_name: yup.string().required("Required"),
     last_name: yup.string().required("Required"),
     username: yup.string().required("Required"),
   });
 
+  // Formik form handler
   const formik = useFormik({
     initialValues: {
       first_name: user.first_name,
@@ -32,6 +35,7 @@ function EditUserName({ user, setUser, setCurrUser }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // Update user data on server
       fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
@@ -43,11 +47,13 @@ function EditUserName({ user, setUser, setCurrUser }) {
           username: values.username,
         }),
       }).then((r) => {
+        // Handle response
         if (r.ok) {
           r.json().then((data) => {
             setUser(data);
             setIsActive(false);
             setCurrUser(data);
+            // Redirect if username changed
             if (user.username !== values.username) {
               navigate(`/users/${values.username}`);
             }
@@ -65,6 +71,7 @@ function EditUserName({ user, setUser, setCurrUser }) {
         </Button>
       </AccordionTitle>
       <AccordionContent active={isActive}>
+        {/* User name edit form */}
         <Form onSubmit={formik.handleSubmit}>
           <FormField>
             <Label>First Name</Label>

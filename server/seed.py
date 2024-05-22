@@ -241,7 +241,8 @@ if __name__ == "__main__":
             song_user_instrument = SongUserInstrument(
               song_id = song.id,
               user_id = user.id,
-              instrument_id = choice(instruments).id
+              instrument_id = choice(instruments).id,
+              notes = choice(['Take 1st solo', 'Follow keys at bridge', 'Take 2nd solo', 'Run through distortion', ''])
             )
             db.session.add(song_user_instrument)
       db.session.commit()

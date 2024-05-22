@@ -13,8 +13,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function EditPassword({ user, setUser }) {
+  // State for controlling the active state of the accordion
   const [isActive, setIsActive] = useState(false);
 
+  // Form validation schema using Yup
   const formSchema = yup.object().shape({
     previous_password: yup.string().required("Required"),
     new_password: yup.string().required("Required"),
@@ -23,6 +25,7 @@ function EditPassword({ user, setUser }) {
       .oneOf([yup.ref("new_password"), null], "Passwords must match"),
   });
 
+  // Formik hook for form handling
   const formik = useFormik({
     initialValues: {
       previous_password: "",
@@ -31,6 +34,7 @@ function EditPassword({ user, setUser }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // API call to update user password
       fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
@@ -42,6 +46,7 @@ function EditPassword({ user, setUser }) {
         }),
       }).then((r) => {
         if (r.ok) {
+          // Update user data and reset form on success
           r.json().then((user) => setUser(user));
           formik.resetForm();
           setIsActive(false);
@@ -58,6 +63,7 @@ function EditPassword({ user, setUser }) {
       <AccordionTitle active={isActive}>
         <Button
           onClick={() => {
+            // Reset form and toggle accordion active state
             isActive ? formik.resetForm() : null;
             setIsActive(!isActive);
           }}
@@ -68,6 +74,7 @@ function EditPassword({ user, setUser }) {
       <AccordionContent active={isActive}>
         <Form
           onSubmit={
+            // Show error alert or submit form based on validation errors
             formik.errors[0]
               ? () =>
                   alert(

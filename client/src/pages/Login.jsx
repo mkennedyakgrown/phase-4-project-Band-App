@@ -5,7 +5,10 @@ import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 
 function Login() {
+  // State for controlling the login form visibility
   const [showLogin, setShowLogin] = useState(true);
+
+  // Get the user data and setUser function from the outlet context
   const { user, setUser } = useOutletContext();
 
   return (
@@ -15,10 +18,13 @@ function Login() {
         <br />
         {showLogin ? (
           <>
+            {/* Display login header */}
             <Header as="h1">Login</Header>
+            {/* Render the login form */}
             <LoginForm onLogin={setUser} />
             <Divider />
             <p>
+              {/* Prompt to sign up if no account */}
               Don't have an account ? &nbsp;
               <Button
                 color="blue"
@@ -32,9 +38,11 @@ function Login() {
           </>
         ) : (
           <>
+            {/* Render the sign-up form */}
             <SignupForm onLogin={setUser} />
             <Divider />
             <p>
+              {/* Prompt to login if already have an account */}
               Already have an account ? &nbsp;
               <Button
                 color="blue"

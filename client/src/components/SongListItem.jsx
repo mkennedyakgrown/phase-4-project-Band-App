@@ -9,13 +9,20 @@ import {
 import { Link } from "react-router-dom";
 
 function SongListItem({ song, activeIndex, setActiveIndex, currUser }) {
+  // Initialize variables
   let members = [];
   let bandName = "";
+
+  // Check if song exists
   if (song) {
+    // Map members
     members = song.members.map((member) => {
+      // Get instrument for each member
       const instrument = song.songs_users_instruments.filter(
         (inst) => inst.user_id === member.id
       )[0].instrument.name;
+
+      // Return JSX for each member
       return (
         <ListItem key={member.id}>
           <Link
@@ -28,12 +35,16 @@ function SongListItem({ song, activeIndex, setActiveIndex, currUser }) {
         </ListItem>
       );
     });
+
+    // Check if current user exists
     if (currUser) {
+      // Get band name for the current user
       bandName = currUser.member_bands.filter(
         (band) => band.id === song.band_id
       )[0].name;
     }
   }
+
   return (
     <ListItem key={song.id}>
       <Card>

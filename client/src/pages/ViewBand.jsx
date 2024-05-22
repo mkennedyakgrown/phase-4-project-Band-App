@@ -18,6 +18,7 @@ import AddSongForm from "../components/AddSongForm";
 import AddMemberForm from "../components/AddMemberForm";
 
 function ViewBand() {
+  // State variables
   const { user } = useOutletContext();
   const [band, setBand] = useState({});
   const [genreIsActive, setGenreIsActive] = useState(false);
@@ -26,6 +27,7 @@ function ViewBand() {
 
   const { id } = useParams();
 
+  // Fetch band data
   useEffect(() => {
     fetch(`/api/bands/${id}`)
       .then((r) => r.json())
@@ -34,6 +36,7 @@ function ViewBand() {
       });
   }, []);
 
+  // Fetch genre data
   useEffect(() => {
     fetch("/api/genres")
       .then((r) => r.json())
@@ -42,11 +45,13 @@ function ViewBand() {
       });
   }, []);
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     name: yup.string().required("Required"),
     genre_id: yup.string().required("Required"),
   });
 
+  // Formik form
   const formik = useFormik({
     initialValues: {
       name: band.name,
@@ -69,6 +74,7 @@ function ViewBand() {
     },
   });
 
+  // Genre options for dropdown
   const genreOptions = genres
     ? genres.map((genre) => {
         return {
@@ -81,6 +87,7 @@ function ViewBand() {
 
   return (
     <main>
+      {/* Band Name section */}
       <Header as="h1">
         {band.name ? band.name : "Loading Band"}
         {user.id === band.owner_id ? (
@@ -102,6 +109,8 @@ function ViewBand() {
           </Form>
         ) : null}
       </Header>
+
+      {/* Genre section */}
       <Header as="h3">
         Genre: {band.genre ? band.genre.name : "Loading Genre"}
         {user.id === band.owner_id ? (
@@ -127,7 +136,10 @@ function ViewBand() {
           </Form>
         ) : null}
       </Header>
+
       <Divider />
+
+      {/* Band owner section */}
       <Segment>
         <Header as="h3">
           Managed By:{" "}
@@ -136,6 +148,8 @@ function ViewBand() {
             : "Loading Owner"}
         </Header>
       </Segment>
+
+      {/* Band Members section */}
       <Segment>
         <Header as="h2">Members</Header>
         {user.id === band.owner_id ? (
@@ -143,12 +157,16 @@ function ViewBand() {
         ) : null}
         <BandMembersList band={band} setBand={setBand} />
       </Segment>
+
+      {/* Band Songs section */}
       <Segment>
         <Header as="h2">Songs</Header>
         <AddSongForm band={band} setBand={setBand} />
         <Divider />
         <BandSongsList band={band} setBand={setBand} />
       </Segment>
+
+      {/* Delete band button */}
       {user.id === band.owner_id ? (
         <DeleteBandButton band={band} user={user} />
       ) : null}

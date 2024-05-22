@@ -4,20 +4,24 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function LoginForm({ onLogin }) {
+  // State for errors and loading status
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     username: yup.string().required("Required"),
     password: yup.string().required("Required"),
   });
 
+  // Formik form handling
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     validationSchema: formSchema,
+    // Form submission handling
     onSubmit: (values) => {
       fetch("/api/login", {
         method: "POST",
@@ -28,6 +32,7 @@ function LoginForm({ onLogin }) {
       })
         .then((r) => r.json())
         .then((data) => {
+          // Set errors if present, otherwise trigger login
           if (data.errors) {
             setErrors(data.errors);
           } else {
@@ -39,6 +44,7 @@ function LoginForm({ onLogin }) {
 
   return (
     <Form onSubmit={formik.handleSubmit}>
+      {/* Username input field */}
       <FormField>
         <Label htmlFor="username">Username</Label>
         <Input
@@ -50,6 +56,7 @@ function LoginForm({ onLogin }) {
           autoComplete="username"
         />
       </FormField>
+      {/* Password input field */}
       <FormField>
         <Label htmlFor="password">Password</Label>
         <Input
@@ -61,11 +68,13 @@ function LoginForm({ onLogin }) {
           autoComplete="current-password"
         />
       </FormField>
+      {/* Submit button */}
       <FormField>
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Login"}
         </Button>
       </FormField>
+      {/* Display form errors */}
       <FormField>
         {formik.errors ? (
           <p>
@@ -74,6 +83,7 @@ function LoginForm({ onLogin }) {
             )}
           </p>
         ) : null}
+        {/* Display server errors */}
         {errors.map((error) => (
           <p key={error}>{error}</p>
         ))}

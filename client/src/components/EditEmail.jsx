@@ -15,16 +15,19 @@ function EditEmail({ user, setUser, currUser }) {
   const [isActive, setIsActive] = useState(false);
   const [email, setEmail] = useState(user.email);
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     email: yup.string().email().required("Required"),
   });
 
+  // Formik form handling
   const formik = useFormik({
     initialValues: {
       email: user.email,
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // API call to update user email
       fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
@@ -33,6 +36,7 @@ function EditEmail({ user, setUser, currUser }) {
         body: JSON.stringify({ email: values.email }),
       }).then((r) => {
         if (r.ok) {
+          // Update user and close edit mode
           r.json().then((updatedUser) => setUser(updatedUser));
           currUser.email = values.email;
           setIsActive(false);
@@ -43,12 +47,14 @@ function EditEmail({ user, setUser, currUser }) {
 
   return (
     <Accordion>
+      {/* Edit Email section */}
       <AccordionTitle active={isActive}>
         <Button onClick={() => setIsActive(!isActive)}>
           {isActive ? "Cancel" : "Edit Email"}
         </Button>
       </AccordionTitle>
       <AccordionContent active={isActive}>
+        {/* Email edit form */}
         <Form onSubmit={formik.handleSubmit}>
           <FormField>
             <Input

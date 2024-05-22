@@ -176,6 +176,7 @@ class SongUserInstrument(db.Model, SerializerMixin):
     song_id = db.Column('song_id', db.Integer, db.ForeignKey('songs.id'), nullable=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'), nullable=True)
     instrument_id = db.Column('instrument_id', db.Integer, db.ForeignKey('instruments.id'), nullable=False)
+    notes = db.Column(db.String, nullable=True)
 
     song = db.relationship('Song', back_populates='songs_users_instruments', uselist=False)
     member = db.relationship('User', back_populates='songs_users_instruments', uselist=False)

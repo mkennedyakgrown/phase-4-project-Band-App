@@ -16,6 +16,7 @@ function AddMemberForm({ band, setBand }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // Make a PATCH request to update band information
       fetch(`/api/bands/${band.id}`, {
         method: "PATCH",
         headers: {
@@ -25,6 +26,7 @@ function AddMemberForm({ band, setBand }) {
       })
         .then((r) => r.json())
         .then((data) => {
+          // Update the band data, and reset the form
           setBand(data);
           formik.resetForm();
           setIsActive(false);
@@ -34,6 +36,7 @@ function AddMemberForm({ band, setBand }) {
 
   return (
     <>
+      {/* Toggle button for the form */}
       <Button onClick={() => setIsActive(!isActive)}>
         {isActive ? "Cancel" : "Add Band Member"}
       </Button>
@@ -41,6 +44,7 @@ function AddMemberForm({ band, setBand }) {
         <>
           <Header as="h3">Add Band Member</Header>
           <Form onSubmit={formik.handleSubmit}>
+            {/* Input field for entering username */}
             <FormInput
               name="username"
               placeholder="Enter Username"

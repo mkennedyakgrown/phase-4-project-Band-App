@@ -1,4 +1,3 @@
-import { Navigate } from "react-router-dom";
 import App from "./App";
 import Login from "./pages/Login";
 import MyBands from "./pages/MyBands";

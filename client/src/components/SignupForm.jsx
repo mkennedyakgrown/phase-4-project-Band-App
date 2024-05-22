@@ -12,11 +12,14 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function SignupForm({ onLogin }) {
+  // State variables
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([]);
 
+  // Context
   const { setUser } = useOutletContext();
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     username: yup.string().required("Required"),
     first_name: yup.string().required("Required"),
@@ -29,6 +32,7 @@ function SignupForm({ onLogin }) {
     email: yup.string().email("Invalid email").required("Required"),
   });
 
+  // Formik form initialization
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -41,6 +45,7 @@ function SignupForm({ onLogin }) {
     validationSchema: formSchema,
     onSubmit: (values) => {
       setIsLoading(true);
+      // API call
       fetch("/api/signup", {
         method: "POST",
         headers: {
@@ -49,10 +54,12 @@ function SignupForm({ onLogin }) {
         body: JSON.stringify(values),
       }).then((r) => {
         if (r.ok) {
-          r.json().then((user) => setUser(user));
-          onLogin(user);
+          r.json().then((user) => {
+            setUser(user); // Set user context
+            onLogin(user); // Perform login
+          });
         } else {
-          r.json().then((err) => setErrors(err.errors));
+          r.json().then((err) => setErrors(err.errors)); // Set errors
         }
         setIsLoading(false);
       });
@@ -72,6 +79,7 @@ function SignupForm({ onLogin }) {
           autoComplete="username"
         />
       </FormField>
+      {/* First Name Field */}
       <FormField>
         <Label htmlFor="first_name">First Name</Label>
         <Input
@@ -82,6 +90,7 @@ function SignupForm({ onLogin }) {
           autoComplete="first-name"
         />
       </FormField>
+      {/* Last Name Field */}
       <FormField>
         <Label htmlFor="last_name">Last Name</Label>
         <Input
@@ -92,6 +101,7 @@ function SignupForm({ onLogin }) {
           autoComplete="last-name"
         />
       </FormField>
+      {/* Password Field */}
       <FormField>
         <Label htmlFor="password">Password</Label>
         <Input
@@ -102,6 +112,7 @@ function SignupForm({ onLogin }) {
           autoComplete="current-password"
         />
       </FormField>
+      {/* Password Confirmation Field */}
       <FormField>
         <Label htmlFor="password_confirmation">Password Confirmation</Label>
         <Input
@@ -113,6 +124,7 @@ function SignupForm({ onLogin }) {
         />
         <p>{formik.errors.password_confirmation}</p>
       </FormField>
+      {/* Email Field */}
       <FormField>
         <Label htmlFor="email">Email</Label>
         <Input
@@ -122,11 +134,13 @@ function SignupForm({ onLogin }) {
           onChange={formik.handleChange}
         />
       </FormField>
+      {/* Submit Button */}
       <FormField>
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Sign Up"}
         </Button>
       </FormField>
+      {/* Display Errors */}
       {errors.map((err) => (
         <li key={err}>{err}</li>
       ))}

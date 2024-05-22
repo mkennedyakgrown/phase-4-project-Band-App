@@ -15,12 +15,14 @@ function AddMemberInstrumentForm({ song, band }) {
   const [memberOptions, setMemberOptions] = useState([]);
   const [instrumentOptions, setInstrumentOptions] = useState([]);
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     user_id: yup.number().required("Required"),
     instrument_id: yup.number().required("Required"),
     song_id: yup.number().required("Required"),
   });
 
+  // Form submission handling
   const formik = useFormik({
     initialValues: {
       user_id: "",
@@ -47,6 +49,7 @@ function AddMemberInstrumentForm({ song, band }) {
     },
   });
 
+  // Fetching member and instrument data
   useEffect(() => {
     const songMembersIds = song.members.map((m) => m.id);
     setMemberOptions(
@@ -75,6 +78,7 @@ function AddMemberInstrumentForm({ song, band }) {
       });
   }, [band]);
 
+  // Handle dropdown change
   function handleDropdownChange(e, { name, value }) {
     formik.setFieldValue(name, value);
   }
@@ -102,7 +106,6 @@ function AddMemberInstrumentForm({ song, band }) {
           <Label>Instrument</Label>
           <FormInput>
             <Dropdown
-              search
               fluid
               selection
               name="instrument_id"

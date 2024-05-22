@@ -5,12 +5,15 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function InstrumentsList({ user, setUser, currUser }) {
+  // State for toggling edit mode
   const [isActive, setIsActive] = useState(false);
 
+  // Effect to set form values based on currUser
   useEffect(() => {
     formik.setValues({ instruments: currUser.instruments, selections: [] });
   }, [currUser]);
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     instruments: yup
       .array()
@@ -18,6 +21,7 @@ function InstrumentsList({ user, setUser, currUser }) {
     selections: yup.array().of(yup.object().shape({ id: yup.number() })),
   });
 
+  // Formik form initialization
   const formik = useFormik({
     initialValues: {
       instruments: currUser.instruments,
@@ -25,6 +29,7 @@ function InstrumentsList({ user, setUser, currUser }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // Submit form data to API
       fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
@@ -45,6 +50,7 @@ function InstrumentsList({ user, setUser, currUser }) {
     },
   });
 
+  // Display list of user's instruments
   const displayInstruments = formik.values.instruments
     ? formik.values.instruments.map((instrument) => (
         <ListItem key={instrument.id}>
@@ -71,6 +77,7 @@ function InstrumentsList({ user, setUser, currUser }) {
 
   return (
     <List>
+      {/* Conditional rendering of edit button */}
       {isActive ? (
         <Button color="green" type="submit" onClick={formik.handleSubmit}>
           Save Changes
@@ -91,7 +98,9 @@ function InstrumentsList({ user, setUser, currUser }) {
           {isActive ? "Cancel" : "Edit Instruments"}
         </Button>
       ) : null}
+      {/* Display list of user's instruments */}
       {displayInstruments}
+      {/* Conditional rendering of add instrument form */}
       {isActive ? <AddInstrumentForm user={user} formik={formik} /> : null}{" "}
     </List>
   );

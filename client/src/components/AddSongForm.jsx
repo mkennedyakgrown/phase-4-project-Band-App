@@ -4,13 +4,16 @@ import { Button, Form, FormInput, Header } from "semantic-ui-react";
 import { useState } from "react";
 
 function AddSongForm({ band, setBand }) {
+  // State for toggling form visibility
   const [isActive, setIsActive] = useState(false);
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     name: yup.string().required("Required"),
     band_id: yup.number().required("Required"),
   });
 
+  // Formik form handling
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -18,6 +21,7 @@ function AddSongForm({ band, setBand }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // Submit form data to backend
       fetch("/api/songs", {
         method: "POST",
         headers: {
@@ -27,6 +31,7 @@ function AddSongForm({ band, setBand }) {
       })
         .then((r) => r.json())
         .then((data) => {
+          // Update band state with new song
           setBand({ ...band, songs: [...band.songs, data] });
           formik.resetForm();
           setIsActive(false);
@@ -36,6 +41,7 @@ function AddSongForm({ band, setBand }) {
 
   return (
     <>
+      {/* Toggle form visibility */}
       <Button onClick={() => setIsActive(!isActive)}>
         {isActive ? "Cancel" : "Add New Song"}
       </Button>

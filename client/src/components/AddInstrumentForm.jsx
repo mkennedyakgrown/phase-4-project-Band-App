@@ -1,3 +1,4 @@
+// components/AddInstrumentForm.jsx
 import { useState, useEffect } from "react";
 import {
   Form,
@@ -8,10 +9,13 @@ import {
   FormGroup,
 } from "semantic-ui-react";
 
+// Define the AddInstrumentForm component
 function AddInstrumentForm({ user, formik }) {
+  // State for instruments and user instrument IDs
   const [instruments, setInstruments] = useState([]);
   const userInstrumentIds = user.instruments.map((instrument) => instrument.id);
 
+  // Fetch instruments data on component mount
   useEffect(() => {
     fetch("/api/instruments")
       .then((r) => r.json())
@@ -20,6 +24,7 @@ function AddInstrumentForm({ user, formik }) {
       });
   }, []);
 
+  // Filter and map instrument choices
   const instrumentChoices = instruments
     .filter((instrument) => !userInstrumentIds.includes(instrument.id))
     .map((instrument) => (
@@ -43,6 +48,7 @@ function AddInstrumentForm({ user, formik }) {
       </FormField>
     ));
 
+  // Return the form with instrument choices
   return (
     <Form>
       <FormGroup>

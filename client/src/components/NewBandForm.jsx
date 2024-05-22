@@ -12,13 +12,16 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function NewBandForm({ genres }) {
+  // Navigation hook for redirecting after form submission
   const navigate = useNavigate();
 
+  // Form validation schema
   const formSchema = yup.object().shape({
     name: yup.string().required("Required"),
     genre_id: yup.number().required("Required"),
   });
 
+  // Formik form handling
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -26,6 +29,7 @@ function NewBandForm({ genres }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      // API call to create a new band
       fetch("/api/bands", {
         method: "POST",
         headers: {
@@ -38,6 +42,7 @@ function NewBandForm({ genres }) {
     },
   });
 
+  // Generate genre options for the dropdown
   let genreOptions = [];
   if (genres[0] != undefined) {
     genreOptions = genres.map((genre) => {
@@ -49,6 +54,7 @@ function NewBandForm({ genres }) {
     });
   }
 
+  // Handle dropdown selection change
   function handleDropdownChange(e, { name, value }) {
     formik.setFieldValue(name, value);
   }
