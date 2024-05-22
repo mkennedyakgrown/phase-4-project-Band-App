@@ -20,7 +20,7 @@ function SongListItem({ song, activeIndex, setActiveIndex, currUser }) {
       // Get instrument for each member
       const instrument = song.songs_users_instruments.filter(
         (inst) => inst.user_id === member.id
-      )[0].instrument.name;
+      )[0];
 
       // Return JSX for each member
       return (
@@ -31,7 +31,8 @@ function SongListItem({ song, activeIndex, setActiveIndex, currUser }) {
           >
             {member.first_name} {member.last_name}
           </Link>{" "}
-          - {instrument}
+          - {instrument.instrument.name}
+          <br />*{instrument.notes}*
         </ListItem>
       );
     });
