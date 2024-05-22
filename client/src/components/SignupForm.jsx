@@ -8,60 +8,67 @@ import {
   Label,
   Header,
 } from "semantic-ui-react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function SignupForm({ onLogin }) {
-  const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([]);
 
   const { setUser } = useOutletContext();
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    setErrors([]);
-    setIsLoading(true);
-    fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        first_name: firstName,
-        last_name: lastName,
-        password: password,
-        password_confirmation: passwordConfirmation,
-        email: email,
-      }),
-    }).then((r) => {
-      setIsLoading(false);
-      if (r.ok) {
-        r.json().then((user) => setUser(user));
-        setUsername("");
-        setPassword("");
-        setPasswordConfirmation("");
-        setEmail("");
-      } else {
-        r.json().then((err) => setErrors(err.errors));
-      }
-    });
-  }
+  const formSchema = yup.object().shape({
+    username: yup.string().required("Required"),
+    first_name: yup.string().required("Required"),
+    last_name: yup.string().required("Required"),
+    password: yup.string().required("Required"),
+    password_confirmation: yup
+      .string()
+      .required("Required")
+      .oneOf([yup.ref("password")], "Passwords must match"),
+    email: yup.string().email("Invalid email").required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      first_name: "",
+      last_name: "",
+      password: "",
+      password_confirmation: "",
+      email: "",
+    },
+    validationSchema: formSchema,
+    onSubmit: (values) => {
+      setIsLoading(true);
+      fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }).then((r) => {
+        if (r.ok) {
+          r.json().then((user) => setUser(user));
+          onLogin(user);
+        } else {
+          r.json().then((err) => setErrors(err.errors));
+        }
+        setIsLoading(false);
+      });
+    },
+  });
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={formik.handleSubmit}>
       <Header as="h1">Signup</Header>
       <FormField>
         <Label htmlFor="username">Username</Label>
         <Input
           id="username"
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={formik.values.username}
+          onChange={formik.handleChange}
           autoComplete="username"
         />
       </FormField>
@@ -70,8 +77,8 @@ function SignupForm({ onLogin }) {
         <Input
           id="first_name"
           type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={formik.values.first_name}
+          onChange={formik.handleChange}
           autoComplete="first-name"
         />
       </FormField>
@@ -80,8 +87,8 @@ function SignupForm({ onLogin }) {
         <Input
           id="last_name"
           type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={formik.values.last_name}
+          onChange={formik.handleChange}
           autoComplete="last-name"
         />
       </FormField>
@@ -90,8 +97,8 @@ function SignupForm({ onLogin }) {
         <Input
           id="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
           autoComplete="current-password"
         />
       </FormField>
@@ -100,18 +107,19 @@ function SignupForm({ onLogin }) {
         <Input
           id="password_confirmation"
           type="password"
-          value={passwordConfirmation}
-          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          value={formik.values.password_confirmation}
+          onChange={formik.handleChange}
           autoComplete="current-password"
         />
+        <p>{formik.errors.password_confirmation}</p>
       </FormField>
       <FormField>
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
         />
       </FormField>
       <FormField>
