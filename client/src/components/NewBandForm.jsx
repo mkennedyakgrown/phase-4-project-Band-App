@@ -2,15 +2,43 @@ import { useState } from "react";
 import {
   FormField,
   Button,
-  Checkbox,
   Form,
   Dropdown,
   Label,
+  Input,
 } from "semantic-ui-react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function NewBandForm({ genres }) {
-  const [bandOptions, setBandOptions] = useState({});
+  // const [bandOptions, setBandOptions] = useState({});
+
+  const navigate = useNavigate();
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required("Required"),
+    genre_id: yup.number().required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      genre_id: "",
+    },
+    validationSchema: formSchema,
+    onSubmit: (values) => {
+      fetch("/api/bands", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((r) => r.json())
+        .then((data) => navigate(`/bands/${data.id}`));
+    },
+  });
 
   let genreOptions = [];
   if (genres[0] != undefined) {
@@ -23,35 +51,39 @@ function NewBandForm({ genres }) {
     });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    fetch("/api/bands", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: bandOptions.name,
-        genre_id: bandOptions.genre,
-      }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        setBandOptions({});
-      });
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   fetch("/api/bands", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       name: bandOptions.name,
+  //       genre_id: bandOptions.genre,
+  //     }),
+  //   })
+  //     .then((r) => r.json())
+  //     .then((data) => {});
+  // }
+
+  function handleDropdownChange(e, { name, value }) {
+    formik.setFieldValue(name, value);
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormField
-        onChange={(e) =>
-          setBandOptions({ ...bandOptions, name: e.target.value })
-        }
-      >
+    <Form onSubmit={formik.handleSubmit}>
+      <FormField onChange={formik.handleChange}>
         <Label basic pointing="below">
           Band Name
         </Label>
-        <input placeholder="Band Name" value={bandOptions.name} />
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+        />
       </FormField>
       <FormField>
         <Label basic pointing="below">
@@ -60,14 +92,16 @@ function NewBandForm({ genres }) {
         <Dropdown
           placeholder="Select Genre"
           selection
+          name="genre_id"
           options={genreOptions}
-          value={bandOptions.genre}
-          onChange={(e, data) => {
-            setBandOptions({ ...bandOptions, genre: data.value });
-          }}
+          value={formik.values.genre}
+          onChange={handleDropdownChange}
         />
       </FormField>
       <Button type="submit">Submit</Button>
+      <p>
+        {formik.errors.name} {formik.errors.genre}
+      </p>
     </Form>
   );
 }

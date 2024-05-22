@@ -1,11 +1,4 @@
-import {
-  Header,
-  Divider,
-  Segment,
-  Grid,
-  GridRow,
-  GridColumn,
-} from "semantic-ui-react";
+import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 import BandMemberCard from "./BandMemberCard";
 
 function BandMembersList({ band, setBand }) {
