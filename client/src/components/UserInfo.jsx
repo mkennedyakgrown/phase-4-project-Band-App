@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Header, SegmentGroup, Segment, Icon } from "semantic-ui-react";
 import BandsList from "./BandsList";
