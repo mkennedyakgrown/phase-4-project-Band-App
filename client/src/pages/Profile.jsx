@@ -1,6 +1,6 @@
 import { useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Header, SegmentGroup, Segment } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import UserInfo from "../components/UserInfo";
 
 function Profile() {

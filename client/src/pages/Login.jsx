@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useOutletContext, Navigate } from "react-router-dom";
 import { Header, Button, Divider } from "semantic-ui-react";
 import LoginForm from "../components/LoginForm";
