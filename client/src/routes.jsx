@@ -38,6 +38,10 @@ const routes = [
         path: "/new-band",
         element: <CreateNewBand />,
       },
+      {
+        path: "/error",
+        element: <ErrorPage />,
+      },
     ],
   },
 ];
