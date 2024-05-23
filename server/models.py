@@ -115,7 +115,7 @@ class Band(db.Model, SerializerMixin):
             raise ValueError('Name must be less than 20 characters long')
         elif type(name) is not str:
             raise ValueError('Name must be a string')
-        elif self.query.filter_by(name=name).first() is not None:
+        elif self.query.filter_by(name=name).first() is not None and name != self.name:
             raise ValueError('This name already exists')
         else:
             return name
