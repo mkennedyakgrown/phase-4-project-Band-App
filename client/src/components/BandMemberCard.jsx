@@ -42,13 +42,13 @@ function BandMemberCard({ member, band, setBand }) {
               Member of: {bands}
             </Accordion.Content>
           </Accordion>
-          {user.id === band.owner.id && (
+          {(user.id === band.owner.id) & (member.id !== band.owner.id) ? (
             <RemoveMemeberButton
               member={member}
               band={band}
               setBand={setBand}
             />
-          )}
+          ) : null}
         </Card.Description>
       </Card.Content>
     </Card>
