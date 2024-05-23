@@ -161,8 +161,8 @@ class Song(db.Model, SerializerMixin):
     def validate_name(self, key, name):
         if not name:
             raise ValueError('Name cannot be empty')
-        elif len(name) > 20:
-            raise ValueError('Name must be less than 20 characters long')
+        elif len(name) > 50:
+            raise ValueError('Name must be less than 50 characters long')
         elif type(name) is not str:
             raise ValueError('Name must be a string')
         elif self.query.filter_by(name=name).first() is not None:
@@ -203,7 +203,7 @@ class Instrument(db.Model, SerializerMixin):
             raise ValueError('Name must be a string')
         elif len(name) > 20:
             raise ValueError('Name must be less than 20 characters long')
-        elif self.query.filter_by(name=name).first() is not None:
+        elif self.query.filter_by(name=name.capitalize()).first() is not None:
             raise ValueError('This name already exists')
         else:
             return name.capitalize()
@@ -228,7 +228,7 @@ class Genre(db.Model, SerializerMixin):
             raise ValueError('Name must be at least 2 characters long')
         elif len(name) > 20:
             raise ValueError('Name must be less than 20 characters long')
-        elif self.query.filter_by(name=name).first() is not None:
+        elif self.query.filter_by(name=name.capitalize()).first() is not None:
             raise ValueError('This name already exists')
         else:
             return name.capitalize()

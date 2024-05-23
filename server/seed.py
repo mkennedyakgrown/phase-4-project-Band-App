@@ -197,16 +197,6 @@ if __name__ == "__main__":
       db.session.add_all(users)
       db.session.commit()
 
-      print("Seeding bands...")
-      bands = create_bands()
-      db.session.add_all(bands)
-      db.session.commit()
-
-      print("Seeding songs...")
-      songs = create_songs()
-      db.session.add_all(songs)
-      db.session.commit()
-
       print("Seeding genres...")
       genres = create_genres()
       db.session.add_all(genres)
@@ -215,6 +205,16 @@ if __name__ == "__main__":
       print('Seeding instruments...')
       instruments = create_instruments()
       db.session.add_all(instruments)
+      db.session.commit()
+
+      print("Seeding bands...")
+      bands = create_bands()
+      db.session.add_all(bands)
+      db.session.commit()
+
+      print("Seeding songs...")
+      songs = create_songs()
+      db.session.add_all(songs)
       db.session.commit()
 
       print('Seeding members...')
