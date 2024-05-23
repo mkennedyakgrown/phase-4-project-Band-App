@@ -1,8 +1,10 @@
 import { Form, Button, FormField, Confirm } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function DeleteBandButton({ band, user }) {
+  const { setUser } = useOutletContext();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -14,7 +16,17 @@ function DeleteBandButton({ band, user }) {
       },
     }).then((r) => {
       if (r.ok) {
-        navigate(`/`);
+        // Update user state
+        r.json().then((data) =>
+          setUser({
+            ...user,
+            member_bands: [
+              ...user.member_bands.filter((b) => b.id !== band.id),
+            ],
+          })
+        );
+        // Redirect to my-bands page
+        navigate(`/my-bands`);
       }
     });
   }
