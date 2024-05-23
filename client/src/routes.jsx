@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import ViewBand from "./pages/ViewBand";
 import Profile from "./pages/Profile";
 import CreateNewBand from "./pages/CreateNewBand";
+import ConfigPage from "./pages/ConfigPage";
 import ErrorPage from "./pages/ErrorPage";
 
 const routes = [
@@ -36,6 +37,10 @@ const routes = [
       {
         path: "/new-band",
         element: <CreateNewBand />,
+      },
+      {
+        path: "/config",
+        element: <ConfigPage />,
       },
       {
         path: "/error",

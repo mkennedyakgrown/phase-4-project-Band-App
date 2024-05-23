@@ -50,6 +50,17 @@ function NavBar({ user, setUser }) {
         Profile
       </MenuItem>
       {user.id ? (
+        <MenuItem
+          name="config"
+          as={NavLink}
+          to="/config"
+          className="nav-link"
+          onClick={handleItemClick}
+        >
+          Config
+        </MenuItem>
+      ) : null}
+      {user.id ? (
         <Button onClick={handleLogoutClick}>Logout</Button>
       ) : (
         <MenuItem
