@@ -28,7 +28,11 @@ class User(db.Model, SerializerMixin):
     @validates('username')
     def validate_username(self, key, name):
         if name == '':
-            raise ValueError('Username cannot be an empty string')
+            raise ValueError('Username cannot be empty')
+        elif len(name) < 3:
+            raise ValueError('Username must be at least 3 characters long')
+        elif len(name) > 20:
+            raise ValueError('Username must be less than 20 characters long')
         elif type(name) is not str:
             raise ValueError('Username must be a string')
         elif ' ' in name:
@@ -42,6 +46,8 @@ class User(db.Model, SerializerMixin):
     def validate_first_name(self, key, name):
         if name == '':
             raise ValueError('First name cannot be empty')
+        elif len(name) > 20:
+            raise ValueError('First name must be less than 20 characters long')
         elif type(name) is not str:
             raise ValueError('First name must use letters only')
         elif ' ' in name:
@@ -55,6 +61,8 @@ class User(db.Model, SerializerMixin):
     def validate_last_name(self, key, name):
         if name == '':
             raise ValueError('Last name cannot be empty')
+        elif len(name) > 20:
+            raise ValueError('Last name must be less than 20 characters long')
         elif type(name) is not str:
             raise ValueError('Last name must use letters only')
         elif ' ' in name:
@@ -85,7 +93,7 @@ class Band(db.Model, SerializerMixin):
     __tablename__ = 'bands'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
     genre_id = db.Column(db.Integer, ForeignKey('genres.id'))
     owner_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
 
@@ -101,10 +109,38 @@ class Band(db.Model, SerializerMixin):
     def validate_name(self, key, name):
         if name == '':
             raise ValueError('Name cannot be an empty string')
+        elif len(name) < 3:
+            raise ValueError('Name must be at least 3 characters long')
+        elif len(name) > 20:
+            raise ValueError('Name must be less than 20 characters long')
+        elif type(name) is not str:
+            raise ValueError('Name must be a string')
         elif self.query.filter_by(name=name).first() is not None:
             raise ValueError('This name already exists')
         else:
             return name
+        
+    @validates('genre_id')
+    def validate_genre_id(self, key, genre_id):
+        if genre_id == '':
+            raise ValueError('Genre cannot be empty')
+        elif type(genre_id) is not int:
+            raise ValueError('Genre must be an integer')
+        elif self.query.filter_by(id=genre_id).first() is None:
+            raise ValueError('This genre does not exist')
+        else:
+            return genre_id
+
+    @validates('owner_id')
+    def validate_owner_id(self, key, owner_id):
+        if not owner_id:
+            raise ValueError('Owner cannot be empty')
+        elif type(owner_id) is not int:
+            raise ValueError('Owner must be an integer')
+        elif self.query.filter_by(id=owner_id).first() is None:
+            raise ValueError('This owner does not exist')
+        else:
+            return owner_id
         
 class Song(db.Model, SerializerMixin):
     __tablename__ = 'songs'
@@ -123,10 +159,28 @@ class Song(db.Model, SerializerMixin):
 
     @validates('name')
     def validate_name(self, key, name):
-        if name == '':
-            raise ValueError('Name cannot be an empty string')
+        if not name:
+            raise ValueError('Name cannot be empty')
+        elif len(name) > 20:
+            raise ValueError('Name must be less than 20 characters long')
+        elif type(name) is not str:
+            raise ValueError('Name must be a string')
+        elif self.query.filter_by(name=name).first() is not None:
+            if (self.query.filter_by(name=name, band_id=self.band_id).first().band_id == self.band_id):
+                raise ValueError('This name and band combination already exists')
         else:
             return name
+        
+    @validates('band_id')
+    def validate_band_id(self, key, band_id):
+        if not band_id:
+            raise ValueError('Band cannot be empty')
+        elif type(band_id) is not int:
+            raise ValueError('Band must be an integer')
+        elif Band.query.filter_by(id=band_id).first() is None:
+            raise ValueError('This band does not exist')
+        else:
+            return band_id
         
 class Instrument(db.Model, SerializerMixin):
     __tablename__ = 'instruments'

@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Button, Form, FormInput, Header } from "semantic-ui-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AddSongForm({ band, setBand }) {
   // State for toggling form visibility
@@ -13,6 +13,10 @@ function AddSongForm({ band, setBand }) {
     band_id: yup.number().required("Required"),
   });
 
+  useEffect(() => {
+    formik.setFieldValue("band_id", band.id);
+  }, [band]);
+
   // Formik form handling
   const formik = useFormik({
     initialValues: {
@@ -22,6 +26,7 @@ function AddSongForm({ band, setBand }) {
     validationSchema: formSchema,
     onSubmit: (values) => {
       // Submit form data to backend
+      console.log(values);
       fetch("/api/songs", {
         method: "POST",
         headers: {
@@ -56,6 +61,8 @@ function AddSongForm({ band, setBand }) {
               value={formik.values.name}
               error={formik.errors.name}
             />
+            {formik.errors.name ? <p>{formik.errors.name}</p> : null}
+            {formik.errors.band_id ? <p>{formik.errors.band_id}</p> : null}
             <Button type="submit">Submit</Button>
           </Form>
         </>

@@ -86,7 +86,7 @@ function ViewBand() {
     : [];
 
   return (
-    <main>
+    <>
       {/* Band Name section */}
       <Header as="h1">
         {band.name ? band.name : "Loading Band"}
@@ -170,7 +170,7 @@ function ViewBand() {
       {user.id === band.owner_id ? (
         <DeleteBandButton band={band} user={user} />
       ) : null}
-    </main>
+    </>
   );
 }
 
