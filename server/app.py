@@ -182,11 +182,26 @@ class Genres(Resource):
     genres = Genre.query.all()
     return [genre.to_dict() for genre in genres]
   
+  def post(self):
+    name = request.get_json()['name']
+    genre = Genre(name=name)
+    db.session.add(genre)
+    db.session.commit()
+    return genre.to_dict()
+  
 class Instruments(Resource):
   
   def get(self):
     instruments = Instrument.query.all()
     return [instrument.to_dict() for instrument in instruments]
+  
+  def post(self):
+    json = request.get_json()
+    name = json.get('name')
+    instrument = Instrument(name=name)
+    db.session.add(instrument)
+    db.session.commit()
+    return instrument.to_dict()
   
 class Songs(Resource):
 
