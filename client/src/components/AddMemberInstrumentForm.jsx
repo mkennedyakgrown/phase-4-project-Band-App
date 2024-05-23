@@ -9,9 +9,10 @@ import {
   FormField,
   FormInput,
   Label,
+  Input,
 } from "semantic-ui-react";
 
-function AddMemberInstrumentForm({ song, band }) {
+function AddMemberInstrumentForm({ song, band, setBand }) {
   const [memberOptions, setMemberOptions] = useState([]);
   const [instrumentOptions, setInstrumentOptions] = useState([]);
 
@@ -20,14 +21,15 @@ function AddMemberInstrumentForm({ song, band }) {
     user_id: yup.number().required("Required"),
     instrument_id: yup.number().required("Required"),
     song_id: yup.number().required("Required"),
+    notes: yup.string(30),
   });
-
   // Form submission handling
   const formik = useFormik({
     initialValues: {
       user_id: "",
       instrument_id: "",
       song_id: song.id,
+      notes: "",
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
@@ -43,6 +45,11 @@ function AddMemberInstrumentForm({ song, band }) {
           fetch(`/api/songs/${song.id}`)
             .then((r) => r.json())
             .then((data) => {
+              fetch(`/api/bands/${band.id}`)
+                .then((r) => r.json())
+                .then((data) => {
+                  setBand(data);
+                });
               formik.resetForm();
             });
         });
@@ -113,6 +120,16 @@ function AddMemberInstrumentForm({ song, band }) {
               value={formik.values.instrument_id}
               placeholder="Select Instrument"
               options={instrumentOptions}
+            />
+          </FormInput>
+        </FormField>
+        <FormField>
+          <Label>Notes</Label>
+          <FormInput>
+            <Input
+              name="notes"
+              onChange={formik.handleChange}
+              value={formik.values.notes}
             />
           </FormInput>
         </FormField>

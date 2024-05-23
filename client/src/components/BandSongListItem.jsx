@@ -95,6 +95,7 @@ function BandSongListItem({ song, band, setBand }) {
         return (
           <List.Item key={member.id}>
             {member.first_name} {member.last_name}: {instrument.instrument.name}
+            <br />*{instrument.notes}*
             {isActive ? (
               <Button
                 onClick={() => removeSongUserInstrument(member, instrument)}
@@ -142,7 +143,9 @@ function BandSongListItem({ song, band, setBand }) {
         ) : null}
       </ItemHeader>
       <List>{membersList}</List>
-      {isActive ? <AddMemberInstrumentForm song={song} band={band} /> : null}
+      {isActive ? (
+        <AddMemberInstrumentForm song={song} band={band} setBand={setBand} />
+      ) : null}
       {isActive ? (
         <DeleteSongButton song={song} band={band} setBand={setBand} />
       ) : null}
