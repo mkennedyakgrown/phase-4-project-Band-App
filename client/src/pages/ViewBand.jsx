@@ -161,7 +161,9 @@ function ViewBand() {
       {/* Band Songs section */}
       <Segment>
         <Header as="h2">Songs</Header>
-        <AddSongForm band={band} setBand={setBand} />
+        {user.id === band.owner_id ? (
+          <AddSongForm band={band} setBand={setBand} />
+        ) : null}
         <Divider />
         <BandSongsList band={band} setBand={setBand} />
       </Segment>
