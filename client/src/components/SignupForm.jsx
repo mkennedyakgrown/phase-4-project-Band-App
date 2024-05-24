@@ -21,9 +21,9 @@ function SignupForm({ onLogin }) {
 
   // Form validation schema
   const formSchema = yup.object().shape({
-    username: yup.string().required("Required"),
-    first_name: yup.string().required("Required"),
-    last_name: yup.string().required("Required"),
+    username: yup.string().min(3).max(20).required("Required"),
+    first_name: yup.string().min(1).max(20).required("Required"),
+    last_name: yup.string().min(1).max(20).required("Required"),
     password: yup.string().required("Required"),
     password_confirmation: yup
       .string()
@@ -79,6 +79,7 @@ function SignupForm({ onLogin }) {
           autoComplete="username"
         />
       </FormField>
+      <p>{formik.errors.username}</p>
       {/* First Name Field */}
       <FormField>
         <Label htmlFor="first_name">First Name</Label>
@@ -90,6 +91,7 @@ function SignupForm({ onLogin }) {
           autoComplete="first-name"
         />
       </FormField>
+      <p>{formik.errors.first_name}</p>
       {/* Last Name Field */}
       <FormField>
         <Label htmlFor="last_name">Last Name</Label>
@@ -101,6 +103,7 @@ function SignupForm({ onLogin }) {
           autoComplete="last-name"
         />
       </FormField>
+      <p>{formik.errors.last_name}</p>
       {/* Password Field */}
       <FormField>
         <Label htmlFor="password">Password</Label>
@@ -112,6 +115,7 @@ function SignupForm({ onLogin }) {
           autoComplete="current-password"
         />
       </FormField>
+      <p>{formik.errors.password}</p>
       {/* Password Confirmation Field */}
       <FormField>
         <Label htmlFor="password_confirmation">Password Confirmation</Label>
