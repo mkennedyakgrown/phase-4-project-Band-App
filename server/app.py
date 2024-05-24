@@ -205,6 +205,10 @@ class Instruments(Resource):
   
 class Songs(Resource):
 
+  def get(self):
+    songs = Song.query.all()
+    return [song.to_dict() for song in songs]
+
   def post(self):
     json = request.get_json()
     name = json.get('name')
@@ -235,6 +239,10 @@ class SongById(Resource):
   
 class SongsUsersInstruments(Resource):
 
+  def get(self):
+    song_user_instruments = SongUserInstrument.query.all()
+    return [song_user_instrument.to_dict() for song_user_instrument in song_user_instruments]
+
   def post(self):
     json = request.get_json()
     song_id = json.get('song_id')
@@ -247,6 +255,9 @@ class SongsUsersInstruments(Resource):
     return song_user_instrument.to_dict()
   
 class SongsUsersInstrumentsById(Resource):
+
+  def get(self, id):
+    return SongUserInstrument.query.filter_by(id=id).first().to_dict()
   
   def delete(self, id):
     song_user_instrument = SongUserInstrument.query.filter_by(id=id).first()
