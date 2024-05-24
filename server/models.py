@@ -190,7 +190,6 @@ class Instrument(db.Model, SerializerMixin):
 
     members = db.relationship('User', secondary='users_instruments', back_populates='instruments')
     songs = association_proxy('songs_users_instruments', 'song')
-    # bands = association_proxy('songs', 'band')
     songs_users_instruments = db.relationship('SongUserInstrument', back_populates='instrument', cascade='all, delete-orphan')
 
     serialize_rules = ('-members', '-songs', '-songs_users_instruments')
