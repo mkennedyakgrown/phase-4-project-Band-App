@@ -34,7 +34,7 @@ class User(db.Model, SerializerMixin):
         elif len(name) > 20:
             raise ValueError('Username must be less than 20 characters long')
         elif type(name) is not str:
-            raise ValueError('Username must be a string')
+            raise TypeError('Username must be a string')
         elif ' ' in name:
             raise ValueError('Username cannot contain spaces')
         elif self.query.filter_by(username=name).first() is not None and name != self.username:
@@ -49,7 +49,7 @@ class User(db.Model, SerializerMixin):
         elif len(name) > 20:
             raise ValueError('First name must be less than 20 characters long')
         elif type(name) is not str:
-            raise ValueError('First name must use letters only')
+            raise TypeError('First name must use letters only')
         elif ' ' in name:
             raise ValueError('First name cannot contain spaces')
         elif search(r"[^\w]", name):
@@ -64,7 +64,7 @@ class User(db.Model, SerializerMixin):
         elif len(name) > 20:
             raise ValueError('Last name must be less than 20 characters long')
         elif type(name) is not str:
-            raise ValueError('Last name must use letters only')
+            raise TypeError('Last name must use letters only')
         elif ' ' in name:
             raise ValueError('Last name cannot contain spaces')
         elif search(r"[^\w]", name):
@@ -114,7 +114,7 @@ class Band(db.Model, SerializerMixin):
         elif len(name) > 20:
             raise ValueError('Name must be less than 20 characters long')
         elif type(name) is not str:
-            raise ValueError('Name must be a string')
+            raise TypeError('Name must be a string')
         elif self.query.filter_by(name=name).first() is not None and name != self.name:
             raise ValueError('This name already exists')
         else:
@@ -125,7 +125,7 @@ class Band(db.Model, SerializerMixin):
         if genre_id == '':
             raise ValueError('Genre cannot be empty')
         elif type(genre_id) is not int:
-            raise ValueError('Genre must be an integer')
+            raise TypeError('Genre must be an integer')
         elif Genre.query.filter_by(id=genre_id).first() is None:
             raise ValueError('This genre does not exist')
         else:
@@ -136,7 +136,7 @@ class Band(db.Model, SerializerMixin):
         if not owner_id:
             raise ValueError('Owner cannot be empty')
         elif type(owner_id) is not int:
-            raise ValueError('Owner must be an integer')
+            raise TypeError('Owner must be an integer')
         elif User.query.filter_by(id=owner_id).first() is None:
             raise ValueError('This owner does not exist')
         else:
@@ -164,7 +164,7 @@ class Song(db.Model, SerializerMixin):
         elif len(name) > 50:
             raise ValueError('Name must be less than 50 characters long')
         elif type(name) is not str:
-            raise ValueError('Name must be a string')
+            raise TypeError('Name must be a string')
         elif self.query.filter_by(name=name).first() is not None:
             if (self.query.filter_by(name=name, band_id=self.band_id).first().band_id == self.band_id):
                 raise ValueError('This name and band combination already exists')
@@ -176,7 +176,7 @@ class Song(db.Model, SerializerMixin):
         if not band_id:
             raise ValueError('Band cannot be empty')
         elif type(band_id) is not int:
-            raise ValueError('Band must be an integer')
+            raise TypeError('Band must be an integer')
         elif Band.query.filter_by(id=band_id).first() is None:
             raise ValueError('This band does not exist')
         else:
@@ -199,7 +199,7 @@ class Instrument(db.Model, SerializerMixin):
         if name == '':
             raise ValueError('Name cannot be an empty string')
         elif type(name) is not str:
-            raise ValueError('Name must be a string')
+            raise TypeError('Name must be a string')
         elif len(name) > 20:
             raise ValueError('Name must be less than 20 characters long')
         elif self.query.filter_by(name=name.capitalize()).first() is not None:
@@ -222,7 +222,7 @@ class Genre(db.Model, SerializerMixin):
         if name == '':
             raise ValueError('Name cannot be an empty string')
         elif type(name) is not str:
-            raise ValueError('Name must be a string')
+            raise TypeError('Name must be a string')
         elif len(name) < 2:
             raise ValueError('Name must be at least 2 characters long')
         elif len(name) > 20:
@@ -250,7 +250,7 @@ class SongUserInstrument(db.Model, SerializerMixin):
     @validates('notes')
     def validate_notes(self, key, notes):
         if type(notes) is not str:
-            raise ValueError('Notes must be a string')
+            raise TypeError('Notes must be a string')
         elif len(notes) > 100:
             raise ValueError('Notes must be less than 100 characters long')
         else:
@@ -261,7 +261,7 @@ class SongUserInstrument(db.Model, SerializerMixin):
         if not instrument_id:
             raise ValueError('Instrument cannot be empty')
         elif type(instrument_id) is not int:
-            raise ValueError('Instrument must be an integer')
+            raise TypeError('Instrument must be an integer')
         elif Instrument.query.filter_by(id=instrument_id).first() is None:
             raise ValueError('This instrument does not exist')
         else:
@@ -272,7 +272,7 @@ class SongUserInstrument(db.Model, SerializerMixin):
         if not user_id:
             raise ValueError('User cannot be empty')
         elif type(user_id) is not int:
-            raise ValueError('User must be an integer')
+            raise TypeError('User must be an integer')
         elif User.query.filter_by(id=user_id).first() is None:
             raise ValueError('This user does not exist')
         else:
@@ -283,7 +283,7 @@ class SongUserInstrument(db.Model, SerializerMixin):
         if not song_id:
             raise ValueError('Song cannot be empty')
         elif type(song_id) is not int:
-            raise ValueError('Song must be an integer')
+            raise TypeError('Song must be an integer')
         elif Song.query.filter_by(id=song_id).first() is None:
             raise ValueError('This song does not exist')
         else:
