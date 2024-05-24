@@ -24,7 +24,11 @@ function Profile() {
       {username === "undefined" ? <Navigate to="/login" /> : null}
       <Header as="h1">Profile</Header>
       {/* Display user information */}
-      <UserInfo currUser={currUser} setCurrUser={setCurrUser} />
+      {currUser.id ? (
+        <UserInfo currUser={currUser} setCurrUser={setCurrUser} />
+      ) : (
+        <Header as="h2">User Not Found</Header>
+      )}
     </>
   );
 }
